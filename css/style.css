@@ -13,6 +13,8 @@ a {
     color: black;
 }
 
+/* Header - main panel */
+
 .main-panel {
     height: auto;
     position: relative;
@@ -90,9 +92,43 @@ a {
     grid-area: search_bar;
 }
 
+/* Navigation panel*/
+
+
+
 .navigation-panel {
     width: 100%;
     height: 70px;
     background-color: var(--red-color);
     grid-area: 2 / 1 / 2 / -1;
 }
+
+.logo-block {
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    grid-area: logo;
+    background-color: var(--red-color);
+    align-items: baseline;
+}
+
+.logo {
+    display: flex;
+}
+
+.bjj-text {
+    height: auto;
+    width: auto;
+    padding-right: 5px;
+    font-size: 50px;
+    font-family: Consolas, sans-serif;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+
+
