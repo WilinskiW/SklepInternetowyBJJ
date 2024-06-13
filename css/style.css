@@ -1,0 +1,98 @@
+:root {
+    --black-color: #1C2826;
+    --red-color: #D64550;
+}
+
+body {
+    margin: 0 auto;
+    font-family: 'Montserrat', 'Teko', Arial, sans-serif, 'Arial', 'Helvetica', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.main-panel {
+    height: auto;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    "contact search_bar options"
+    "logo products products";
+}
+
+#header-contact {
+    grid-area: contact;
+    justify-self: center;
+    margin-top: 4px;
+    padding: 7px;
+    display: flex;
+    gap: 5px;
+    font-size: 0.85rem;
+}
+
+#phone-number-contact {
+    display: flex;
+    padding: 15px;
+    grid-area: contact;
+    color: var(--black-color);
+}
+
+#phone-number-contact::before {
+    content: url("../svg/phone.svg");
+    padding-right: 3px;
+}
+
+#phone-number-contact:hover,
+#phone-number-contact:hover::before {
+    filter:
+            invert(30%)
+            sepia(100%)
+            saturate(5000%)
+            hue-rotate(345deg)
+            brightness(90%)
+            contrast(90%);
+}
+
+
+#email-contact {
+    display: flex;
+    grid-area: contact;
+    padding: 15px;
+}
+
+#email-contact:before {
+    content: url("../svg/mail.svg");
+    padding-right: 3px;
+}
+
+#email-contact:hover,
+#email-contact:hover::before {
+    filter:
+            invert(30%)
+            sepia(100%)
+            saturate(5000%)
+            hue-rotate(345deg)
+            brightness(90%)
+            contrast(90%);
+}
+
+
+.menu-search {
+    display: block;
+    justify-self: center;
+    border: 1px solid #c3c7c8;
+    margin: 0 auto;
+    max-width: 590px;
+    grid-area: search_bar;
+}
+
+.navigation-panel {
+    width: 100%;
+    height: 70px;
+    background-color: var(--red-color);
+    grid-area: 2 / 1 / 2 / -1;
+}
