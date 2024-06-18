@@ -1,12 +1,11 @@
 :root {
     --black-color: #1C2826;
-    --red-color: hsl(355, 65%, 56%);
-    --moreRed--color: hsl(355, 90%, 56%);
+    --red-color: hsl(356, 96%, 63%);
+    --moreRed--color: hsl(355, 98%, 64%);
 }
 
 body {
     margin: 0 auto;
-    font-family: 'Montserrat', 'Teko', Arial, sans-serif, 'Arial', 'Helvetica', sans-serif;
 }
 
 a {
@@ -79,7 +78,7 @@ a {
 }
 
 form.search-bar {
-    padding-top: 10px;
+    padding: 20px;
     justify-content: center;
     align-self: center;
     grid-area: search_bar;
@@ -118,6 +117,7 @@ form.search-bar::after {
 
 #options {
     display: flex;
+    padding: 15px;
     justify-content: space-between;
     grid-area: options;
     -webkit-user-select: none;
@@ -131,7 +131,6 @@ form.search-bar::after {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    padding: 2px;
 }
 
 #option_menu_userAccount:before {
@@ -150,11 +149,6 @@ form.search-bar::after {
     padding-left: 8px;
 }
 
-#option_menu_sell_product {
-    padding-right: 20px;
-    padding-bottom: 5px;
-}
-
 #option_menu_sell_product:before {
     content: url("../svg/sell.svg");
     width: 64px;
@@ -162,12 +156,12 @@ form.search-bar::after {
 }
 
 /*Header - Navigation panel*/
-
-.navigation-panel {
-    width: 100%;
-    height: 70px;
-    background-color: var(--red-color);
-    grid-area: 2 / 1 / 2 / -1;
+.logo-block,
+#products-block {
+    border-top: black 1px solid;
+    border-bottom: black 1px solid;
+    font-family: 'Teko', sans-serif;
+    font-size: 1.25em;
 }
 
 .logo-block {
@@ -181,6 +175,8 @@ form.search-bar::after {
 
 .logo {
     display: flex;
+    padding-top: 7px;
+
 }
 
 .bjj-text {
@@ -195,13 +191,13 @@ form.search-bar::after {
 }
 
 #logo-png {
+    display: flex;
     padding-top: 7px;
 }
 
 /* Products */
 
 #products-block {
-    padding: 6px;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -210,17 +206,36 @@ form.search-bar::after {
 }
 
 .product {
-    padding: 15px;
+    align-content: center;
+    height: 81px;
     background-color: var(--red-color);
-    font-weight: bold;
-    transition: background-color ease;
+    flex-grow: 1;
+}
+
+.category-href {
+    display: flex;
+    justify-content: center;
 }
 
 .product:hover {
-    border-radius: 30px;
     background-color: var(--moreRed--color);
+    border-collapse: collapse;
+    border: 1px solid;
 }
 
+/* END Header */
+/* Main */
 
+/* END Main */
+/* Footer */
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    color: white;
+    background-color: var(--black-color);
+}
+/* END Footer */
 
 
