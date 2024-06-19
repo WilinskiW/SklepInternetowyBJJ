@@ -2,11 +2,11 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Sklep BJJ - najlepszy sprzęt sportowy do brazyliskiego jiu jitsu</title>
+    <title>Sklep BJJ - Produkty</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/header_footer.css">
-    <link rel="stylesheet" href="css/product_gallery.css">
-    <link rel="stylesheet" href="css/logo.css">
+    <link rel="stylesheet" href="/css/logo.css">
+    <link rel="stylesheet" href="/css/header_footer.css">
+    <link rel="stylesheet" href="/css/product_gallery.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,7 +59,7 @@
             <div class="bjj-text">
                 <span>BJJ.c</span>
             </div>
-            <a id="logo-png" href="#"><img src="./png/logo.png" alt="" width="54" height="50"></a>
+            <a id="logo-png" href="../index.php"><img src="/png/logo.png" alt="" width="54" height="50"></a>
             <div class="bjj-text">
                 <span>m</span>
             </div>
@@ -75,7 +75,6 @@
     </nav>
 </header>
 <main>
-    <a href="#"><img id="banner" src="jpg/bjj_kolekcja_red.jpg" alt="kolekcja: t-shirty 2024"></a>
     <section class="product-gallery">
         <span id="produkty-span">Produkty</span>
         <div class="image-gallery">
@@ -145,9 +144,6 @@
             </div>
         </div>
     </section>
-    <!--    <section class="last-seen-gallery">-->
-    <!--        php-->
-    <!--    </section>-->
 </main>
 <footer>
     <p>&COPY; Wszelkie prawa zastrzeżone</p>

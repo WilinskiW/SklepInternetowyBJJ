@@ -1,19 +1,8 @@
-:root {
-    --black-color: #1C2826;
-    --red-color: hsl(356, 96%, 63%);
-    --moreRed--color: hsl(355, 92%, 55%);
-}
-
-body {
-    margin: 0 auto;
-}
-
+/* Header - main panel */
 a {
     text-decoration: none;
     color: black;
 }
-
-/* Header - main panel */
 
 .main-panel {
     height: auto;
@@ -36,42 +25,34 @@ a {
     font-size: 0.85rem;
 }
 
-#phone-number-contact {
-    display: flex;
-    padding: 15px;
-    grid-area: contact;
-    color: var(--black-color);
+.contact-type {
+    margin: 10px;
 }
 
-#phone-number-contact::before {
-    content: url("../svg/phone.svg");
-    padding-right: 3px;
-}
+/*#phone-number-contact {*/
+/*    display: flex;*/
+/*    padding: 15px;*/
+/*    grid-area: contact;*/
+/*    color: var(--black-color);*/
+/*}*/
+
+
+/*#email-contact {*/
+/*    display: flex;*/
+/*    grid-area: contact;*/
+/*    padding: 15px;*/
+/*}*/
+
 
 #phone-number-contact:hover,
-#phone-number-contact:hover::before,
 #email-contact:hover,
-#email-contact:hover::before,
 #option_menu_userAccount:hover,
-#option_menu_userAccount:hover:before,
 #option_menu_shopping_cart:hover,
-#option_menu_shopping_cart:hover:before,
-#option_menu_sell_product:hover,
-#option_menu_sell_product:hover:before {
+#option_menu_sell_product:hover
+{
     filter: invert(30%) sepia(100%) saturate(5000%) hue-rotate(345deg) brightness(90%) contrast(90%);
 }
 
-
-#email-contact {
-    display: flex;
-    grid-area: contact;
-    padding: 15px;
-}
-
-#email-contact:before {
-    content: url("../svg/mail.svg");
-    padding-right: 3px;
-}
 
 #search-block {
     grid-area: search_bar;
@@ -129,6 +110,7 @@ form.search-bar::after {
 
 .options-text {
     display: flex;
+    flex-direction: column;
     align-self: baseline;
 }
 
@@ -138,27 +120,14 @@ form.search-bar::after {
     flex-direction: column;
 }
 
-#option_menu_userAccount:before {
-    content: url("../svg/account.svg");
-    justify-self: center;
-    width: 32px;
-    height: 32px;
-    padding-left: 25px;
+#option_menu_userAccount,
+#option_menu_shopping_cart,
+#option_menu_sell_product{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-#option_menu_shopping_cart:before {
-    content: url("../svg/cart.svg");
-    justify-self: center;
-    width: 32px;
-    height: 32px;
-    padding-left: 8px;
-}
-
-#option_menu_sell_product:before {
-    content: url("../svg/sell.svg");
-    width: 64px;
-    padding-left: 50px;
-}
 
 /*Header - Navigation panel*/
 .logo-block,
@@ -228,90 +197,6 @@ form.search-bar::after {
 }
 
 /* END Header */
-/* Main */
-
-#produkty-span {
-    display: flex;
-    justify-content: center;
-    margin: 50px;
-    font-size: 1.85rem;
-    font-family: 'Teko', sans-serif;
-}
-
-.image-gallery {
-    height: auto;
-    position: relative;
-    display: grid;
-    margin: 50px;
-    grid-template-rows: 500px;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-areas: "product1 product2 product3 product4";
-}
-
-.product-block {
-    box-shadow: 0 0 3px #eaeaea;
-    display: flex;
-    flex-direction: column;
-    margin: 30px;
-    font-family: 'Montserrat','Teko',Arial,sans-serif,'Arial','Helvetica',sans-serif;
-}
-
-.product-wrapper {
-    display: flex;
-    margin: 10px;
-}
-
-.product-info {
-    width: 80%;
-}
-
-.product-name {
-    font-weight: normal;
-}
-
-.add-to-cart-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 20%;
-}
-
-.cart-button-area {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background-color: var(--red-color);
-}
-
-.cart-icon {
-    content: url("../svg/cart.svg");
-    display: flex;
-    width: 30px;
-    height: 32px;
-    align-content: center;
-}
-
-.cart-button-area:hover {
-    background-color: var(--moreRed--color);
-    box-shadow: 1px 1px 1px #ff1616;
-}
-
-.product-name:hover {
-    color: var(--red-color);
-}
-
-.product-block:hover {
-    box-shadow: 0 0 20px #eaeaea;
-}
-
-.product-image {
-    background-color: #1C2826;
-    height: 75%;
-}
-
-/* END Main */
 
 /* Footer */
 footer {
@@ -324,5 +209,3 @@ footer {
 }
 
 /* END Footer */
-
-

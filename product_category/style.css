@@ -1,0 +1,14 @@
+:root {
+    --black-color: #1C2826;
+    --red-color: hsl(356, 96%, 63%);
+    --moreRed--color: hsl(355, 92%, 55%);
+}
+
+body {
+    margin: 0 auto;
+}
+
+main {
+    font-family: Teko, sans-serif;
+}
+

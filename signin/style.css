@@ -1,0 +1,76 @@
+:root {
+    --black-color: #1C2826;
+    --red-color: hsl(356, 96%, 63%);
+    --moreRed--color: hsl(355, 92%, 55%);
+}
+
+
+
+body {
+    margin: 0 auto;
+}
+
+main {
+    font-family: Teko, sans-serif;
+}
+
+.container-row {
+    display: flex;
+    margin: 30px;
+}
+
+
+.container-block {
+    width: 100%;
+}
+
+#login-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    margin: 15px;
+    font-weight: normal;
+    font-size: 2.5rem;
+}
+
+.form-block {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.input-text {
+    margin: 10px;
+}
+
+
+.input {
+    padding: 3px;
+    height: 40px;
+    font-family: 'Montserrat','Teko',Arial,sans-serif,'Arial','Helvetica',sans-serif;
+    width: 100%;
+}
+
+.input-submit {
+    display: flex;
+    justify-content: center;
+}
+
+#login-submit{
+    width: 300px;
+    height: 50px;
+    border: var(--black-color) 1px solid;
+    background-color: var(--red-color);
+}
+
+#reqister-block{
+    background-color: #1C2826;
+}
+
+
+

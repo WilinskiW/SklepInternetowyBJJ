@@ -1,0 +1,20 @@
+:root {
+    --black-color: #1C2826;
+    --red-color: hsl(356, 96%, 63%);
+    --moreRed--color: hsl(355, 92%, 55%);
+}
+body {
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+#banner {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+
