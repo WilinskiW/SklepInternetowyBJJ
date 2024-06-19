@@ -43,7 +43,7 @@
     <div id="options">
         <div id="option_menu_userAccount" class="header_option">
             <i class="fa-solid fa-user"></i>
-            <a href="signin/index.php">Twoje konto</a>
+            <a href="../signin/index.php">Twoje konto</a>
         </div>
         <div id="option_menu_shopping_cart" class="header_option">
             <i class="fa-solid fa-cart-shopping"></i>
@@ -66,11 +66,11 @@
         </div>
     </div>
     <nav id="products-block">
-        <div id="men-products" class="product"><a class="category-href" href="product_category/index.php">Mężczyźni</a>
+        <div id="men-products" class="product"><a class="category-href" href="#">Mężczyźni</a>
         </div>
-        <div id="woman-products" class="product"><a class="category-href" href="product_category/index.php">Kobiety</a>
+        <div id="woman-products" class="product"><a class="category-href" href="#">Kobiety</a>
         </div>
-        <div id="kid-products" class="product"><a class="category-href" href="product_category/index.php">Dzieci</a>
+        <div id="kid-products" class="product"><a class="category-href" href="#">Dzieci</a>
         </div>
     </nav>
 </header>

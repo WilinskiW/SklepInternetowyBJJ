@@ -11,17 +11,20 @@
     position: relative;
     display: grid;
     margin: 50px;
-    grid-template-rows: 500px;
+    grid-template-rows: 550px;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-areas: "product1 product2 product3 product4";
 }
 
 .product-block {
-    box-shadow: 0 0 3px #eaeaea;
     display: flex;
     flex-direction: column;
     margin: 30px;
     font-family: 'Montserrat','Teko',Arial,sans-serif,'Arial','Helvetica',sans-serif;
+}
+
+.product-block:hover {
+    box-shadow: 0 0 3px #eaeaea;
+
 }
 
 .product-wrapper {
@@ -54,7 +57,6 @@
 }
 
 .cart-icon {
-    content: url("../svg/cart.svg");
     display: flex;
     width: 30px;
     height: 32px;
