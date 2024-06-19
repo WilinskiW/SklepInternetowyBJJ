@@ -37,7 +37,7 @@
 </header>
 <main>
     <div class="container-row">
-        <div class="container-block">
+        <div id="login" class="container-block">
             <h1>Zaloguj się</h1>
             <div class="form-block">
                 <form id="register-form-input" class="form-input">
@@ -50,12 +50,12 @@
                                autocomplete="off">
                     </div>
                     <div class="input-submit">
-                        <input id="login-submit" type="submit" value="Zaloguj się">
+                        <input id="login-submit" class="submit" type="submit" value="Zaloguj się">
                     </div>
                 </form>
             </div>
         </div>
-        <div class="container-block">
+        <div id="register" class="container-block">
             <h1>Zarejestruj się</h1>
             <div class="form-block">
                 <form id="register-form-input" class="form-input">
@@ -85,7 +85,7 @@
                                autocomplete="off">
                     </div>
                     <div class="input-submit">
-                        <input id="login-submit" type="submit" value="Zarejestruj się">
+                        <input id="reqister-submit" class="submit" type="submit" value="Zarejestruj się">
                     </div>
                 </form>
             </div>

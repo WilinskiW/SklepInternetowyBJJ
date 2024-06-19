@@ -47,7 +47,7 @@
         </div>
         <div id="option_menu_shopping_cart" class="header_option">
             <i class="fa-solid fa-cart-shopping"></i>
-            <a href="">Koszyk</a>
+            <a href="../shopping_cart/index.php">Koszyk</a>
         </div>
         <div id="option_menu_sell_product" class="header_option">
             <i class="fa-solid fa-paper-plane"></i>
