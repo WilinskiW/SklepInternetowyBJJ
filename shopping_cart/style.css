@@ -10,6 +10,7 @@ body {
 
 main {
     font-family: Teko, sans-serif;
+    align-items: flex-end;
 }
 
 .container{
@@ -36,7 +37,41 @@ p {
     align-items: center;
 }
 
+.cart-table {
+    width: 100%;
+}
 
+.cart-table,th,td,tr {
+    border: 2px solid;
+    text-align: center;
+    border-collapse: collapse;
+}
 
+td {
+    font-family: 'Montserrat', 'Teko', Arial, sans-serif, 'Arial', 'Helvetica', sans-serif;
+}
 
+.img-cell {
+    width: 20%;
+}
 
+.cart-image {
+    width: 120px;
+    height: auto;
+}
+
+#summarize-container {
+    display: flex;
+    align-items: center;
+    margin: 20px;
+    background-color: #e6e6e6;
+    border-left: var(--red-color) solid 6px;
+    border-radius: 4px;
+    width: 50%;
+    height: 100px;
+}
+
+#sum-text {
+    padding-left: 50px;
+    font-size: 1.67rem;
+}

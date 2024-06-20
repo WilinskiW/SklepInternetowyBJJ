@@ -1,35 +1,35 @@
 <?php
 // Rozpoczęcie sesji
 session_start();
-
 // Dołączenie skryptu do połączenia z bazą danych
 include '../db_connect.php';
 
-// Obsługa dodawania produktu do koszyka
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['product_id'])) {
+// Pobranie produktów w koszyku
+$cart_items = array();
+
+// Sprawdzenie, czy użytkownik jest zalogowany
+if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
     $user_id = $_SESSION['user_id']; // Zalogowany użytkownik
-    $product_id = $_GET['product_id']; // ID produktu do dodania
 
-    // Sprawdzenie, czy produkt jest już w koszyku
-    $stmt = $conn->prepare("SELECT * FROM Shopping_cart WHERE Users_ID = :user_id AND Products_ID = :product_id");
-    $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id]);
-    $item = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $conn->prepare("SELECT Products.*, Shopping_cart.Quantity FROM Shopping_cart JOIN Products ON Shopping_cart.Products_ID = Products.ID WHERE Shopping_cart.Users_ID = :user_id");
+    $stmt->execute(['user_id' => $user_id]);
+    $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    // Użytkownik nie jest zalogowany, użyj sesji do przechowywania koszyka
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $product_id => $quantity) {
+            $stmt = $conn->prepare("SELECT * FROM Products WHERE ID = :product_id");
+            $stmt->execute(['product_id' => $product_id]);
+            $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($item) {
-        // Produkt jest już w koszyku, zaktualizuj ilość
-        $new_quantity = $item['Quantity'] + 1;
-        $stmt = $conn->prepare("UPDATE Shopping_cart SET Quantity = :quantity WHERE Users_ID = :user_id AND Products_ID = :product_id");
-        $stmt->execute(['quantity' => $new_quantity, 'user_id' => $user_id, 'product_id' => $product_id]);
-    } else {
-        // Produktu nie ma jeszcze w koszyku, dodaj nowy wpis
-        $stmt = $conn->prepare("INSERT INTO Shopping_cart (Users_ID, Products_ID, Quantity) VALUES (:user_id, :product_id, 1)");
-        $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id]);
+            if ($product) {
+                $product['Quantity'] = $quantity;
+                $cart_items[] = $product;
+            }
+        }
     }
-
-    echo "Produkt dodany do koszyka!";
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="pl">
@@ -37,9 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['product_id'])) {
     <meta charset="UTF-8">
     <title>Sklep BJJ - najlepszy sprzęt sportowy do brazyliskiego jiu jitsu</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/logo.css">
     <link rel="stylesheet" href="/css/header_footer.css">
     <link rel="stylesheet" href="/css/product_gallery.css">
-    <link rel="stylesheet" href="/css/logo.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,10 +76,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['product_id'])) {
     <div id="options">
         <div id="option_menu_userAccount" class="header_option">
             <i class="fa-solid fa-user"></i>
-            <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != ''){?>
+            <?php if ($_SESSION['user_id'] != '') { ?>
                 <a href="../account_info/index.php">Twoje konto</a>
             <?php } else { ?>
-                <a href="../account_info/index.php">Zaloguj się</a>
+                <a href="../signin/index.php">Zaloguj się</a>
             <?php } ?>
         </div>
         <div id="option_menu_shopping_cart" class="header_option">
@@ -115,12 +115,55 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['product_id'])) {
 </header>
 <main>
     <div class="container">
-        <div id="no-product-info">
-            <h1>Twój koszyk jest pusty</h1>
-            <p>Dodaj produkty do koszyka!</p>
+        <?php if (empty($cart_items)): ?>
+            <div id="no-product-info">
+                <h1>Twój koszyk jest pusty</h1>
+                <p>Dodaj produkty do koszyka!</p>
+            </div>
+        <?php else: ?>
+        <h1>Twój koszyk:</h1>
+        <table class="cart-table">
+            <tr>
+                <th>Obraz</th>
+                <th>Nazwa</th>
+                <th>Cena</th>
+                <th>Ilość</th>
+                <th>Akcje</th>
+            </tr>
+            <?php
+            $sum_price = 0;
+            foreach ($cart_items as $item): ?>
+                <tr>
+                    <td class="img-cell"><img class="cart-image"
+                                              src="data:image/jpeg;base64,<?= base64_encode($item['Image']) ?>"
+                                              alt="<?= $item['Name'] ?>"></td>
+                    <td><?= $item['Name'] ?></td>
+                    <td><?= $item['Price'] ?> zł</td>
+                    <td><?= $item['Quantity'] ?> szt.</td>
+                    <td>
+                        <form method="post" action="edit_product.php">
+                            <input type="hidden" name="product_id" value="<?= $item['ID'] ?>">
+                            <input type="submit" value="Edytuj">
+                        </form>
+                        <form method="post" action="delete_product.php">
+                            <input type="hidden" name="product_id" value="<?= $item['ID'] ?>">
+                            <input type="submit" value="Usuń">
+                        </form>
+                    </td>
+                </tr>
+            <?php
+            $sum_price += $item['Price'];
+            endforeach; ?>
+        </table>
+        <div id="summarize-container">
+            <div id="summarize-text-box">
+                <p id="sum-text">Łącznie do zapłaty: <?= $sum_price ?> zł</p>
+            </div>
         </div>
     </div>
+    <?php endif; ?>
 </main>
+
 <footer>
     <p>&COPY; Wszelkie prawa zastrzeżone</p>
 </footer>

@@ -108,7 +108,7 @@ if (isset($conn)) {
                         </div>
 
                         <div class="add-to-cart-button">
-                            <a href="shopping_cart/index.php?product_id=<?= $product['ID'] ?>">
+                            <a href="/shopping_cart/index.php?product_id=<?= $product['ID'] ?>">
                                 <div class="cart-button-area">
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </div>

@@ -59,7 +59,7 @@ else{
     <div id="options">
         <div id="option_menu_userAccount" class="header_option">
             <i class="fa-solid fa-user"></i>
-            <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != ''){?>
+            <?php if($_SESSION['user_id'] != ''){?>
                 <a href="account_info/index.php">Twoje konto</a>
             <?php } else { ?>
             <a href="signin/index.php">Zaloguj się</a>
@@ -115,7 +115,7 @@ else{
                         </div>
 
                         <div class="add-to-cart-button">
-                            <a href="shopping_cart/index.php?product_id=<?= $product['ID'] ?>">
+                            <a href="add_to_cart.php?product_id=<?= $product['ID'] ?>">
                                 <div class="cart-button-area">
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </div>
