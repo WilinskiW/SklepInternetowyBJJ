@@ -5,6 +5,7 @@ session_set_cookie_params($expire);
 session_start();
 
 include_once '../db_connect.php';
+include_once 'User.php';
 
 $user = new User($conn);
 
@@ -73,10 +74,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="password" id="log-password" class="input" name="log-password" placeholder="Hasło"
                                autocomplete="off" required>
                     </div>
-                    <?php if(isset($_SESSION['lock_fail']) &&$_SESSION['lock_fail']){ ?>
-                    <p id="login-error">Błędny login lub hasło!</p>
-                    <?php
-                    } $_SESSION['lock_fail'] = false;
+                    <?php if(isset($_SESSION['lock_fail']) && $_SESSION['lock_fail']){ ?>
+                        <div id="login-error" style="color: red; font-weight: bold;">Błędny login lub hasło!</div>
+                        <?php
+                        unset($_SESSION['lock_fail']);
+                    }
                     ?>
                     <div class="input-submit">
                         <input id="login-submit" class="submit" type="submit" value="Zaloguj się">
