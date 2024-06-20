@@ -1,3 +1,16 @@
+<?php
+session_start();
+include_once "../db_connect.php";
+
+if (isset($conn)) {
+    $stmt = $conn->prepare("SELECT * FROM Products");
+    $stmt->execute();
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    throw new Exception("Nie połączono się z bazą danych!");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -43,7 +56,11 @@
     <div id="options">
         <div id="option_menu_userAccount" class="header_option">
             <i class="fa-solid fa-user"></i>
-            <a href="../signin/index.php">Twoje konto</a>
+            <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
+                <a href="../account_info/index.php">Twoje konto</a>
+            <?php } else { ?>
+                <a href="../signin/index.php">Zaloguj się</a>
+            <?php } ?>
         </div>
         <div id="option_menu_shopping_cart" class="header_option">
             <i class="fa-solid fa-cart-shopping"></i>
@@ -78,71 +95,28 @@
     <section class="product-gallery">
         <span id="produkty-span">Produkty</span>
         <div class="image-gallery">
-            <div id="product1" class="product-block">
-                <img class="product-image" src="" alt="nazwa produktu">
-                <div class="product-wrapper">
-                    <div class="product-info">
-                        <h4>
-                            <a class="product-name" href="">Nazwa produktu</a>
-                        </h4>
-                        <p><strong>Cena(w liczbie)</strong></p>
-                    </div>
-                    <div class="add-to-cart-button">
-                        <div class="cart-button-area">
-                            <i class="fa-solid fa-cart-shopping"></i>
+            <?php foreach ($products as $product): ?>
+                <div class="product-block">
+                    <img class="product-image" src="data:image/jpeg;base64,<?= base64_encode($product['Image']) ?>"
+                         alt="<?= $product['Name'] ?>">
+                    <div class="product-wrapper">
+                        <div class="product-info">
+                            <h4>
+                                <a class="product-name" href=""><?= $product['Name'] ?></a>
+                            </h4>
+                            <p><strong><?= $product['Price'] ?> zł</strong></p>
+                        </div>
+
+                        <div class="add-to-cart-button">
+                            <a href="shopping_cart/index.php?product_id=<?= $product['ID'] ?>">
+                                <div class="cart-button-area">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="product2" class="product-block">
-                <img class="product-image" src="" alt="nazwa produktu">
-                <div class="product-wrapper">
-                    <div class="product-info">
-                        <h4>
-                            <a class="product-name" href="">Nazwa produktu</a>
-                        </h4>
-                        <p><strong>Cena(w liczbie)</strong></p>
-                    </div>
-                    <div class="add-to-cart-button">
-                        <div class="cart-button-area">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="product3" class="product-block">
-                <img class="product-image" src="" alt="nazwa produktu">
-                <div class="product-wrapper">
-                    <div class="product-info">
-                        <h4>
-                            <a class="product-name" href="">Nazwa produktu</a>
-                        </h4>
-                        <p><strong>Cena(w liczbie)</strong></p>
-                    </div>
-                    <div class="add-to-cart-button">
-                        <div class="cart-button-area">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="product4" class="product-block">
-                <img class="product-image" src="" alt="nazwa produktu">
-                <div class="product-wrapper">
-                    <div class="product-info">
-                        <h4>
-                            <a class="product-name" href="">Nazwa produktu</a>
-                        </h4>
-                        <p><strong>Cena(w liczbie)</strong></p>
-                    </div>
-                    <div class="add-to-cart-button">
-                        <div class="cart-button-area">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <?php endforeach ?>
     </section>
 </main>
 <footer>

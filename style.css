@@ -1,7 +1,7 @@
 :root {
     --black-color: #1C2826;
     --red-color: hsl(356, 96%, 63%);
-    --moreRed--color: hsl(0, 100%, 54%);
+    --moreRed--color: hsl(0, 100%, 50%);
 }
 body {
     margin: 0 auto;

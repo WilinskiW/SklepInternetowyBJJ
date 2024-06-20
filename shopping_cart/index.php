@@ -1,3 +1,36 @@
+<?php
+// Rozpoczęcie sesji
+session_start();
+
+// Dołączenie skryptu do połączenia z bazą danych
+include '../db_connect.php';
+
+// Obsługa dodawania produktu do koszyka
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['product_id'])) {
+    $user_id = $_SESSION['user_id']; // Zalogowany użytkownik
+    $product_id = $_GET['product_id']; // ID produktu do dodania
+
+    // Sprawdzenie, czy produkt jest już w koszyku
+    $stmt = $conn->prepare("SELECT * FROM Shopping_cart WHERE Users_ID = :user_id AND Products_ID = :product_id");
+    $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id]);
+    $item = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($item) {
+        // Produkt jest już w koszyku, zaktualizuj ilość
+        $new_quantity = $item['Quantity'] + 1;
+        $stmt = $conn->prepare("UPDATE Shopping_cart SET Quantity = :quantity WHERE Users_ID = :user_id AND Products_ID = :product_id");
+        $stmt->execute(['quantity' => $new_quantity, 'user_id' => $user_id, 'product_id' => $product_id]);
+    } else {
+        // Produktu nie ma jeszcze w koszyku, dodaj nowy wpis
+        $stmt = $conn->prepare("INSERT INTO Shopping_cart (Users_ID, Products_ID, Quantity) VALUES (:user_id, :product_id, 1)");
+        $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id]);
+    }
+
+    echo "Produkt dodany do koszyka!";
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -43,7 +76,11 @@
     <div id="options">
         <div id="option_menu_userAccount" class="header_option">
             <i class="fa-solid fa-user"></i>
-            <a href="../signin/index.php">Twoje konto</a>
+            <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != ''){?>
+                <a href="../account_info/index.php">Twoje konto</a>
+            <?php } else { ?>
+                <a href="../account_info/index.php">Zaloguj się</a>
+            <?php } ?>
         </div>
         <div id="option_menu_shopping_cart" class="header_option">
             <i class="fa-solid fa-cart-shopping"></i>
