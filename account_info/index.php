@@ -1,10 +1,14 @@
 <?php
 // Ustawienie czasu wygaśnięcia sesji na 30 minut
-$expire = 30*60; // 30 minut
+$expire = 30 * 60; // 30 minut
 session_set_cookie_params($expire);
 session_start();
 
 include '../db_connect.php';
+
+if (!isset($user['user_id'])) {
+    header("Location: ../index.php");
+}
 
 if (isset($conn)) {
     $user_id = $_SESSION['user_id'];
@@ -16,7 +20,7 @@ if (isset($conn)) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == "GET" && isset($_GET['reset-submit-input'])) {
-    $_SESSION['user_id'] = '';
+    unset($_SESSION['user_id']);
     unset($_SESSION['account_type']);
     header("Location: ../index.php");
 }
@@ -88,7 +92,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset-text-input'])) {
             </form>
             <form method="get" id="log-out">
                 <div class="input">
-                    <input id="log-out-submit"  class="submit" type="submit" name="reset-submit-input" value="Wyloguj się">
+                    <input id="log-out-submit" class="submit" type="submit" name="reset-submit-input"
+                           value="Wyloguj się">
                 </div>
             </form>
         </div>

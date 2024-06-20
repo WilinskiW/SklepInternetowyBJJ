@@ -4,7 +4,7 @@ session_set_cookie_params($expire);
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == "GET" && isset($_GET['reset-submit-input'])) {
-    $_SESSION['user_id'] = '';
+    unset($_SESSION['user_id']);
     unset($_SESSION['account_type']);
     header("Location: ../index.php");
 }

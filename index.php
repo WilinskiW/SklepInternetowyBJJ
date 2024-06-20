@@ -16,7 +16,6 @@ if (isset($conn)) {
 
 if (isset($_COOKIE['recently_viewed'])) {
     $recently_viewed = json_decode($_COOKIE['recently_viewed'], true);
-
     $placeholders = str_repeat('?,', count($recently_viewed) - 1) . '?';
     $stmt = $conn->prepare("SELECT * FROM Products WHERE ID IN ($placeholders)");
     $stmt->execute($recently_viewed);
@@ -73,7 +72,7 @@ if (isset($_COOKIE['recently_viewed'])) {
 
                 ?>
                 <a href="admin_panel/index.php">Panel administracji</a>
-            <?php } else if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
+            <?php } else if (isset($_SESSION['user_id'])) { ?>
                 <a href="account_info/index.php">Twoje konto</a>
             <?php } else { ?>
                 <a href="signin/index.php">Zaloguj się</a>

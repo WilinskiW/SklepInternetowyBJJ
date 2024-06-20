@@ -8,7 +8,7 @@ include '../db_connect.php';
 // Pobranie produktów w koszyku
 $cart_items = array();
 
-if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
+if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id']; // Zalogowany użytkownik
 
     $stmt = $conn->prepare("SELECT Products.*, Shopping_cart.Quantity FROM Shopping_cart JOIN Products ON Shopping_cart.Products_ID = Products.ID WHERE Shopping_cart.Users_ID = :user_id");
@@ -77,7 +77,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
             <i class="fa-solid fa-user"></i>
             <?php if(isset($_SESSION['account_type']) && ($_SESSION['account_type'] == 'admin')){?>
                 <a href="../admin_panel/index.php">Panel administracji</a>
-            <?php } else if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != ''){ ?>
+            <?php } else if(isset($_SESSION['user_id'])){ ?>
                 <a href="../account_info/index.php">Twoje konto</a>
             <?php } else { ?>
                 <a href="../signin/index.php">Zaloguj się</a>
@@ -162,7 +162,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
                 <p id="sum-text">Łącznie do zapłaty: <?= $sum_price ?> zł</p>
             </div>
         </div>
-        <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != ''): ?>
+        <?php if (isset($_SESSION['user_id'])): ?>
             <div id="checkout-container">
                 <form method="post" action="../checkout/index.php">
                     <input class="input-submit" type="submit" value="Złóż zamówienie">
