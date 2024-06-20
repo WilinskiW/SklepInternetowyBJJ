@@ -1,5 +1,36 @@
 <?php
+session_start();
+
+include "../db_connect.php";
+// Obsługa formularza rejestracji
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $firstname = $_POST['register-firstname'];
+    $lastname = $_POST['register-lastname'];
+    $email = $_POST['register-email'];
+    $address = $_POST['register-address'];
+    $postal_code = $_POST['register-postal_code'];
+    $password = password_hash($_POST['register-password'], PASSWORD_DEFAULT);
+
+    if(isset($conn)) {
+        $stmt = $conn->prepare("
+        INSERT INTO Users (Firstname, Lastname, Email, Address, Postel_Code, Password) 
+        VALUES (:firstname, :lastname, :email, :address, :postal_code, :password)");
+        $stmt->bindParam(':firstname', $firstname);
+        $stmt->bindParam(':lastname', $lastname);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':address', $address);
+        $stmt->bindParam(':postal_code', $postal_code);
+        $stmt->bindParam(':password', $password);
+        $stmt->execute();
+    }
+    else{
+        throw new Exception("Nie połączono się z bazą danych!");
+    }
+}
+
 ?>
+
+
 
 <!doctype html>
 <html lang="pl">
@@ -40,14 +71,14 @@
         <div id="login" class="container-block">
             <h1>Zaloguj się</h1>
             <div class="form-block">
-                <form id="register-form-input" class="form-input">
+                <form method="post" id="register-form-input" class="form-input">
                     <div class="input-text">
                         <input type="text" id="log-login" class="input" name="log-email" placeholder="Email"
-                               autocomplete="off">
+                               autocomplete="off" required>
                     </div>
                     <div class="input-text">
                         <input type="password" id="log-password" class="input" name="log-password" placeholder="Hasło"
-                               autocomplete="off">
+                               autocomplete="off" required>
                     </div>
                     <div class="input-submit">
                         <input id="login-submit" class="submit" type="submit" value="Zaloguj się">
@@ -58,31 +89,31 @@
         <div id="register" class="container-block">
             <h1>Zarejestruj się</h1>
             <div class="form-block">
-                <form id="register-form-input" class="form-input">
+                <form method="post" id="register-form-input" class="form-input">
                     <div class="input-text">
                         <input type="text" class="input" name="register-firstname" placeholder="Imię"
-                               autocomplete="off">
+                               autocomplete="off" required>
                     </div>
                     <div class="input-text">
                         <input type="text" class="input" name="register-lastname" placeholder="Nazwisko"
-                               autocomplete="off">
+                               autocomplete="off" required>
                     </div>
                     <div class="input-text">
 <!--                        Weryfikacja emaila!-->
                         <input type="text" class="input" name="register-email" placeholder="Email"
-                               autocomplete="off">
+                               autocomplete="off" required>
                     </div>
                     <div class="input-text">
                         <input type="text" class="input" name="register-address" placeholder="Adres zamieszkania (Ulica)"
-                               autocomplete="off">
+                               autocomplete="off" required>
                     </div>
                     <div class="input-text">
-                        <input type="text" class="input" name="register-address" placeholder="Kod pocztowy, Miasto"
-                               autocomplete="off">
+                        <input type="text" class="input" name="register-postal_code" placeholder="Kod pocztowy"
+                               autocomplete="off" required>
                     </div>
                     <div class="input-text">
-                        <input type="password" id="log-password" class="input" name="password-login" placeholder="Hasło"
-                               autocomplete="off">
+                        <input type="password" id="log-password" class="input" name="register-password" placeholder="Hasło"
+                               autocomplete="off" required>
                     </div>
                     <div class="input-submit">
                         <input id="reqister-submit" class="submit" type="submit" value="Zarejestruj się">

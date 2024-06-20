@@ -11,25 +11,33 @@
     position: relative;
     display: grid;
     margin: 50px;
-    grid-template-rows: 550px;
+    grid-template-rows: 600px;
     grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .product-block {
     display: flex;
     flex-direction: column;
+    height: auto;
     margin: 30px;
-    font-family: 'Montserrat','Teko',Arial,sans-serif,'Arial','Helvetica',sans-serif;
+    font-family: 'Montserrat', 'Teko', Arial, sans-serif, 'Arial', 'Helvetica', sans-serif;
+    box-shadow: 0 0 3px #eaeaea;
 }
 
 .product-block:hover {
     box-shadow: 0 0 3px #eaeaea;
-
 }
 
 .product-wrapper {
     display: flex;
     margin: 10px;
+}
+
+.product-image {
+    max-width: 100%;
+    width: auto;
+    height: 550px;
+    object-fit: contain;
 }
 
 .product-info {
@@ -74,9 +82,4 @@
 
 .product-block:hover {
     box-shadow: 0 0 20px #eaeaea;
-}
-
-.product-image {
-    background-color: #1C2826;
-    height: 75%;
 }
