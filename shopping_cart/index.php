@@ -98,13 +98,11 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
         </div>
     </div>
     <nav id="products-block">
-        <div id="men-products" class="product"><a class="category-href"
-                                                  href="../product_category/index.php">Mężczyźni</a>
+        <div id="men-products" class="product"><a class="category-href" href="?category=Mężczyźni">Mężczyźni</a>
         </div>
-        <div id="woman-products" class="product"><a class="category-href"
-                                                    href="../product_category/index.php">Kobiety</a>
+        <div id="woman-products" class="product"><a class="category-href" href="?category=Kobiety">Kobiety</a>
         </div>
-        <div id="kid-products" class="product"><a class="category-href" href="../product_category/index.php">Dzieci</a>
+        <div id="kid-products" class="product"><a class="category-href" href="?category=Dzieci">Dzieci</a>
         </div>
     </nav>
 </header>
@@ -132,7 +130,8 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
                     <td class="img-cell"><img class="cart-image"
                                               src="data:image/jpeg;base64,<?= base64_encode($item['Image']) ?>"
                                               alt="<?= $item['Name'] ?>"></td>
-                    <td><?= $item['Name'] ?></td>
+                    <td><a class="product-name" href="/product_info/index.php?product_id=
+                                <?= $item['ID'] ?>"><?= $item['Name'] ?></a></td>
                     <td><?= $item['Price'] ?> zł</td>
                     <td><?= $item['Quantity'] ?> szt.</td>
                     <td class="actions-box">
@@ -161,6 +160,17 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
                 <p id="sum-text">Łącznie do zapłaty: <?= $sum_price ?> zł</p>
             </div>
         </div>
+        <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != ''): ?>
+            <div id="checkout-container">
+                <form method="post" action="../checkout/index.php">
+                    <input class="input-submit" type="submit" value="Złóż zamówienie">
+                </form>
+            </div>
+        <?php else: ?>
+            <div id="login-reminder">
+                <p>Musisz się <a href="../signin/index.php">zalogować</a>, aby złożyć zamówienie.</p>
+            </div>
+        <?php endif; ?>
     </div>
     <?php endif; ?>
 </main>

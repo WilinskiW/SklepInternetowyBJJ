@@ -1,14 +1,14 @@
 <?php
-// Ustawienie czasu wygaśnięcia sesji na 30 minut
-$expire = 30*60; // 30 minut
-session_set_cookie_params($expire);
+// Rozpoczęcie sesji
 session_start();
 
+// Dołączenie skryptu do połączenia z bazą danych
 include '../db_connect.php';
 
 $product_id = $_GET['product_id'];
 
-$stmt = $conn->prepare("SELECT * FROM Products WHERE ID = :product_id");
+$stmt = $conn->prepare("SELECT Products.*, Warehouse.Amount FROM Products 
+    JOIN Warehouse ON Products.ID = Warehouse.Products_ID WHERE Products.ID = :product_id");
 $stmt->execute(['product_id' => $product_id]);
 $product = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
@@ -40,7 +40,7 @@ $product = $stmt->fetch(PDO::FETCH_ASSOC);
     <img src="data:image/jpeg;base64,<?= base64_encode($product['Image']) ?>" alt="<?= $product['Name'] ?>">
     <p><?= $product['Description'] ?></p>
     <p>Cena: <?= $product['Price'] ?> zł</p>
-    <!-- reszta informacji o produkcie -->
+    <p>Ilość w magazynie: <?= $product['Amount'] ?></p>
 </main>
 <!-- reszta strony -->
 </body>

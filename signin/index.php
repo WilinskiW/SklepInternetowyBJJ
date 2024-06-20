@@ -1,63 +1,3 @@
-<?php
-// Ustawienie czasu wygaśnięcia sesji na 30 minut
-$expire = 30*60; // 30 minut
-session_set_cookie_params($expire);
-session_start();
-include_once "../db_connect.php";
-
-if(!isset($conn)){
-    throw new Exception("Nie połączono się z bazą danych!");
-}
-
-function loginUser($conn, $email, $password) {
-    $stmt = $conn->prepare("SELECT * FROM Users WHERE Email = :email");
-    $stmt->execute(['email' => $email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($user && password_verify($password, $user['Password'])) {
-        $_SESSION['user_id'] = $user['ID'];
-        header("Location: ../index.php");
-    } else {
-        header("Location: index.php");
-    }
-}
-
-function registerUser($conn, $firstname, $lastname, $email, $address, $postal_code, $password) {
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Niepoprawny format adresu e-mail!";
-        exit();
-    }
-
-    $stmt = $conn->prepare("
-    INSERT INTO Users (Firstname, Lastname, Email, Address, Postel_Code, Password) 
-    VALUES (:firstname, :lastname, :email, :address, :postal_code, :password)");
-    $stmt->bindParam(':firstname', $firstname);
-    $stmt->bindParam(':lastname', $lastname);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':address', $address);
-    $stmt->bindParam(':postal_code', $postal_code);
-    $stmt->bindParam(':password', $password);
-    $stmt->execute();
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['log-email']) && isset($_POST['log-password'])) {
-        loginUser($conn, $_POST['log-email'], $_POST['log-password']);
-    } elseif (isset($_POST['register-firstname'])
-        && isset($_POST['register-lastname'])
-        && isset($_POST['register-email'])
-        && isset($_POST['register-address'])
-        && isset($_POST['register-postal_code'])
-        && isset($_POST['register-password'])) {
-        registerUser($conn, $_POST['register-firstname'],
-            $_POST['register-lastname'], $_POST['register-email'],
-            $_POST['register-address'], $_POST['register-postal_code'],
-            password_hash($_POST['register-password'], PASSWORD_DEFAULT));
-    }
-}
-?>
-
-
 <!doctype html>
 <html lang="pl">
 <head>
@@ -97,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div id="login" class="container-block">
             <h1>Zaloguj się</h1>
             <div class="form-block">
-                <form method="post" id="login-form-input" class="form-input">
+                <form method="post" id="login-form-input" class="form-input" action="log_in.php">
                     <div class="input-text">
                         <input type="text" id="log-login" class="input" name="log-email" placeholder="Email"
                                autocomplete="off" required>
@@ -106,6 +46,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="password" id="log-password" class="input" name="log-password" placeholder="Hasło"
                                autocomplete="off" required>
                     </div>
+                    <?php if(isset($_SESSION['lock_fail']) &&$_SESSION['lock_fail']){ ?>
+                    <p id="login-error">Błędny login lub hasło!</p>
+                    <?php
+                    } $_SESSION['lock_fail'] = false;
+                    ?>
                     <div class="input-submit">
                         <input id="login-submit" class="submit" type="submit" value="Zaloguj się">
                     </div>
@@ -115,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div id="register" class="container-block">
             <h1>Zarejestruj się</h1>
             <div class="form-block">
-                <form method="post" id="register-form-input" class="form-input">
+                <form method="post" id="register-form-input" class="form-input" action="register.php">
                     <div class="input-text">
                         <input type="text" class="input" name="register-firstname" placeholder="Imię"
                                autocomplete="off" required>
@@ -125,7 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                autocomplete="off" required>
                     </div>
                     <div class="input-text">
-<!--                        Weryfikacja emaila!-->
                         <input type="text" class="input" name="register-email" placeholder="Email"
                                autocomplete="off" required>
                     </div>

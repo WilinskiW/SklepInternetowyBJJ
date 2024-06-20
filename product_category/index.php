@@ -5,14 +5,17 @@ session_set_cookie_params($expire);
 session_start();
 include_once "../db_connect.php";
 
+$category = $_GET['category']; // Pobranie kategorii z URL
+
 if (isset($conn)) {
-    $stmt = $conn->prepare("SELECT * FROM Products");
-    $stmt->execute();
+    $stmt = $conn->prepare("SELECT * FROM Products WHERE Category = :category");
+    $stmt->execute(['category' => $category]);
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
     die("Nie połączono się z bazą danych!");
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pl">
@@ -82,11 +85,11 @@ if (isset($conn)) {
         </div>
     </div>
     <nav id="products-block">
-        <div id="men-products" class="product"><a class="category-href" href="#">Mężczyźni</a>
+        <div id="men-products" class="product"><a class="category-href" href="../product_category/index.php?category=Mężczyźni">Mężczyźni</a>
         </div>
-        <div id="woman-products" class="product"><a class="category-href" href="#">Kobiety</a>
+        <div id="woman-products" class="product"><a class="category-href" href="../product_category/index.php?category=Kobiety">Kobiety</a>
         </div>
-        <div id="kid-products" class="product"><a class="category-href" href="#">Dzieci</a>
+        <div id="kid-products" class="product"><a class="category-href" href="../product_category/index.php?category=Dzieci">Dzieci</a>
         </div>
     </nav>
 </header>
@@ -101,7 +104,8 @@ if (isset($conn)) {
                     <div class="product-wrapper">
                         <div class="product-info">
                             <h4>
-                                <a class="product-name" href=""><?= $product['Name'] ?></a>
+                                <a class="product-name" href="/product_info/index.php?product_id=
+                                <?= $product['ID'] ?>"><?= $product['Name'] ?></a>
                             </h4>
                             <p><strong><?= $product['Price'] ?> zł</strong></p>
                         </div>

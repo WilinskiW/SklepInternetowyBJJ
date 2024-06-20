@@ -62,7 +62,9 @@ else{
     <div id="options">
         <div id="option_menu_userAccount" class="header_option">
             <i class="fa-solid fa-user"></i>
-            <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != ''){?>
+            <?php if(isset($_SESSION['account_type']) && ($_SESSION['account_type'] == 'admin')){?>
+                <a href="admin_panel/index.php">Panel administracji</a>
+            <?php } else if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != ''){ ?>
                 <a href="account_info/index.php">Twoje konto</a>
             <?php } else { ?>
             <a href="signin/index.php">Zaloguj się</a>
@@ -85,13 +87,14 @@ else{
         </div>
     </div>
     <nav id="products-block">
-        <div id="men-products" class="product"><a class="category-href" href="product_category/index.php">Mężczyźni</a>
+        <div id="men-products" class="product"><a class="category-href" href="product_category/index.php?category=Mężczyźni">Mężczyźni</a>
         </div>
-        <div id="woman-products" class="product"><a class="category-href" href="product_category/index.php">Kobiety</a>
+        <div id="woman-products" class="product"><a class="category-href" href="product_category/index.php?category=Kobiety">Kobiety</a>
         </div>
-        <div id="kid-products" class="product"><a class="category-href" href="product_category/index.php">Dzieci</a>
+        <div id="kid-products" class="product"><a class="category-href" href="product_category/index.php?category=Dzieci">Dzieci</a>
         </div>
     </nav>
+
 </header>
 <main>
     <a href="#"><img id="banner" src="jpg/bjj_kolekcja_red.jpg" alt="kolekcja: t-shirty 2024"></a>

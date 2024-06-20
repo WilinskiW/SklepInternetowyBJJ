@@ -13,14 +13,15 @@ main {
     align-items: flex-end;
 }
 
-.container{
+
+.container {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 40px;
 }
 
-h1,p {
+h1, p {
     font-weight: normal;
     margin-top: 0;
     margin-bottom: 0;
@@ -41,7 +42,7 @@ p {
     width: 100%;
 }
 
-.cart-table,th,td,tr {
+.cart-table, th, td, tr {
     border: 2px solid;
     text-align: center;
     border-collapse: collapse;
