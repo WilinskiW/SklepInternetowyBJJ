@@ -1,35 +1,58 @@
 <?php
 session_start();
+include_once "../db_connect.php";
 
-include "../db_connect.php";
-// Obsługa formularza rejestracji
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $firstname = $_POST['register-firstname'];
-    $lastname = $_POST['register-lastname'];
-    $email = $_POST['register-email'];
-    $address = $_POST['register-address'];
-    $postal_code = $_POST['register-postal_code'];
-    $password = password_hash($_POST['register-password'], PASSWORD_DEFAULT);
+if(!isset($conn)){
+    throw new Exception("Nie połączono się z bazą danych!");
+}
 
-    if(isset($conn)) {
-        $stmt = $conn->prepare("
-        INSERT INTO Users (Firstname, Lastname, Email, Address, Postel_Code, Password) 
-        VALUES (:firstname, :lastname, :email, :address, :postal_code, :password)");
-        $stmt->bindParam(':firstname', $firstname);
-        $stmt->bindParam(':lastname', $lastname);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':address', $address);
-        $stmt->bindParam(':postal_code', $postal_code);
-        $stmt->bindParam(':password', $password);
-        $stmt->execute();
-    }
-    else{
-        throw new Exception("Nie połączono się z bazą danych!");
+function loginUser($conn, $email, $password) {
+    $stmt = $conn->prepare("SELECT * FROM Users WHERE Email = :email");
+    $stmt->execute(['email' => $email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($password, $user['Password'])) {
+        $_SESSION['user_id'] = $user['ID'];
+        echo "Zalogowano pomyślnie!";
+    } else {
+        echo "Błędny email lub hasło!";
     }
 }
 
-?>
+function registerUser($conn, $firstname, $lastname, $email, $address, $postal_code, $password) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Niepoprawny format adresu e-mail!";
+        exit();
+    }
 
+    $stmt = $conn->prepare("
+    INSERT INTO Users (Firstname, Lastname, Email, Address, Postel_Code, Password) 
+    VALUES (:firstname, :lastname, :email, :address, :postal_code, :password)");
+    $stmt->bindParam(':firstname', $firstname);
+    $stmt->bindParam(':lastname', $lastname);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':address', $address);
+    $stmt->bindParam(':postal_code', $postal_code);
+    $stmt->bindParam(':password', $password);
+    $stmt->execute();
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['log-email']) && isset($_POST['log-password'])) {
+        loginUser($conn, $_POST['log-email'], $_POST['log-password']);
+    } elseif (isset($_POST['register-firstname'])
+        && isset($_POST['register-lastname'])
+        && isset($_POST['register-email'])
+        && isset($_POST['register-address'])
+        && isset($_POST['register-postal_code'])
+        && isset($_POST['register-password'])) {
+        registerUser($conn, $_POST['register-firstname'],
+            $_POST['register-lastname'], $_POST['register-email'],
+            $_POST['register-address'], $_POST['register-postal_code'],
+            password_hash($_POST['register-password'], PASSWORD_DEFAULT));
+    }
+}
+?>
 
 
 <!doctype html>
@@ -71,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div id="login" class="container-block">
             <h1>Zaloguj się</h1>
             <div class="form-block">
-                <form method="post" id="register-form-input" class="form-input">
+                <form method="post" id="login-form-input" class="form-input">
                     <div class="input-text">
                         <input type="text" id="log-login" class="input" name="log-email" placeholder="Email"
                                autocomplete="off" required>
