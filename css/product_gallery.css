@@ -6,7 +6,7 @@
     font-family: 'Teko', sans-serif;
 }
 
-.image-gallery {
+.image-gallery, .last-seen-gallery {
     height: auto;
     position: relative;
     display: grid;

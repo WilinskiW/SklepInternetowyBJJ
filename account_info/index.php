@@ -15,8 +15,9 @@ if (isset($conn)) {
     throw new Exception("Nie połączono się z bazą");
 }
 
-if($_SERVER['REQUEST_METHOD'] == "GET" && isset($_GET['reset-submit-input'])){
+if ($_SERVER['REQUEST_METHOD'] == "GET" && isset($_GET['reset-submit-input'])) {
     $_SESSION['user_id'] = '';
+    unset($_SESSION['account_type']);
     header("Location: ../index.php");
 }
 

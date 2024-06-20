@@ -11,6 +11,19 @@ $stmt = $conn->prepare("SELECT Products.*, Warehouse.Amount FROM Products
     JOIN Warehouse ON Products.ID = Warehouse.Products_ID WHERE Products.ID = :product_id");
 $stmt->execute(['product_id' => $product_id]);
 $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Dodajemy ID produktu do pliku cookie
+if (isset($_COOKIE['recently_viewed'])) {
+    $recently_viewed = json_decode($_COOKIE['recently_viewed'], true);
+} else {
+    $recently_viewed = array();
+}
+
+if (!in_array($product_id, $recently_viewed)) {
+    $recently_viewed[] = $product_id;
+    setcookie('recently_viewed', json_encode($recently_viewed), time() + (86400 * 30), "/"); // Plik cookie wygasa po 30 dniach
+}
+
 ?>
 
 <!DOCTYPE html>

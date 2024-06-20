@@ -1,21 +1,28 @@
 <?php
 // Ustawienie czasu wygaśnięcia sesji na 30 minut
-$expire = 30*60; // 30 minut
+$expire = 30 * 60; // 30 minut
 session_set_cookie_params($expire);
 session_start();
 
 include_once 'db_connect.php';
 
-if(isset($conn)) {
+if (isset($conn)) {
     $stmt = $conn->prepare("SELECT * FROM Products");
     $stmt->execute();
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-else{
+} else {
     throw new Exception("Nie połączono się z bazą danych!");
 }
-?>
 
+if (isset($_COOKIE['recently_viewed'])) {
+    $recently_viewed = json_decode($_COOKIE['recently_viewed'], true);
+
+    $placeholders = str_repeat('?,', count($recently_viewed) - 1) . '?';
+    $stmt = $conn->prepare("SELECT * FROM Products WHERE ID IN ($placeholders)");
+    $stmt->execute($recently_viewed);
+    $recent_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+?>
 
 <!DOCTYPE html>
 <html lang="pl">
@@ -62,12 +69,14 @@ else{
     <div id="options">
         <div id="option_menu_userAccount" class="header_option">
             <i class="fa-solid fa-user"></i>
-            <?php if(isset($_SESSION['account_type']) && ($_SESSION['account_type'] == 'admin')){?>
+            <?php if (isset($_SESSION['account_type']) && ($_SESSION['account_type'] == 'admin')) {
+
+                ?>
                 <a href="admin_panel/index.php">Panel administracji</a>
-            <?php } else if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != ''){ ?>
+            <?php } else if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
                 <a href="account_info/index.php">Twoje konto</a>
             <?php } else { ?>
-            <a href="signin/index.php">Zaloguj się</a>
+                <a href="signin/index.php">Zaloguj się</a>
             <?php } ?>
         </div>
         <div id="option_menu_shopping_cart" class="header_option">
@@ -87,11 +96,14 @@ else{
         </div>
     </div>
     <nav id="products-block">
-        <div id="men-products" class="product"><a class="category-href" href="product_category/index.php?category=Mężczyźni">Mężczyźni</a>
+        <div id="men-products" class="product"><a class="category-href"
+                                                  href="product_category/index.php?category=Mężczyźni">Mężczyźni</a>
         </div>
-        <div id="woman-products" class="product"><a class="category-href" href="product_category/index.php?category=Kobiety">Kobiety</a>
+        <div id="woman-products" class="product"><a class="category-href"
+                                                    href="product_category/index.php?category=Kobiety">Kobiety</a>
         </div>
-        <div id="kid-products" class="product"><a class="category-href" href="product_category/index.php?category=Dzieci">Dzieci</a>
+        <div id="kid-products" class="product"><a class="category-href"
+                                                  href="product_category/index.php?category=Dzieci">Dzieci</a>
         </div>
     </nav>
 
@@ -127,17 +139,49 @@ else{
                         </div>
                     </div>
                 </div>
-            <?php
-            $counter++;
-            if($counter == product_amount){
-                break;
-            }
+                <?php
+                $counter++;
+                if ($counter == product_amount) {
+                    break;
+                }
             endforeach; ?>
         </div>
     </section>
-    <!--    <section class="last-seen-gallery">-->
-    <!--        php-->
-    <!--    </section>-->
+    <span id="produkty-span">Ostatnio oglądane</span>
+    <section class="last-seen-gallery">
+        <?php
+        const last_seen_amount = 4;
+        $counter = 0;
+        foreach ($recent_products as $recent_product):?>
+            <div class="product-block">
+                <img class="product-image" src="data:image/jpeg;base64,<?= base64_encode($recent_product['Image']) ?>"
+                     alt="<?= $recent_product['Name'] ?>">
+                <div class="product-wrapper">
+                    <div class="product-info">
+                        <h4>
+                            <a class="product-name" href="/product_info/index.php?product_id=
+                                <?= $recent_product['ID'] ?>"><?= $recent_product['Name'] ?></a>
+
+                        </h4>
+                        <p><strong><?= $recent_product['Price'] ?> zł</strong></p>
+                    </div>
+
+                    <div class="add-to-cart-button">
+                        <a href="add_to_cart.php?product_id=<?= $recent_product['ID'] ?>">
+                            <div class="cart-button-area">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <?php
+            $counter++;
+            if ($counter == last_seen_amount) {
+                break;
+            }
+        endforeach; ?>
+    </section>
 </main>
 <footer>
     <p>&COPY; Wszelkie prawa zastrzeżone</p>
