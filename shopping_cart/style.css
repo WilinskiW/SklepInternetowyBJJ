@@ -60,9 +60,10 @@ td {
     height: auto;
 }
 
-.actions {
-    display: flex;
+.action-button {
+    margin: 5px;
 }
+
 
 #summarize-container {
     display: flex;

@@ -120,7 +120,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
         <h1>Twój koszyk:</h1>
         <table class="cart-table">
             <tr>
-                <th>Obraz</th>
+                <th>Podgląd produktu</th>
                 <th>Nazwa</th>
                 <th>Cena</th>
                 <th>Ilość</th>
@@ -136,20 +136,20 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
                     <td><?= $item['Name'] ?></td>
                     <td><?= $item['Price'] ?> zł</td>
                     <td><?= $item['Quantity'] ?> szt.</td>
-                    <td>
-                        <form id="increase-form" class="actions" method="post" action="edit_product.php">
+                    <td class="actions-box">
+                        <form class="action-box" method="post" action="edit_product.php">
                             <input type="hidden" name="product_id" value="<?= $item['ID'] ?>">
                             <input type="hidden" name="action" value="increase">
-                            <input id="#increase" type="submit" value="+">
+                            <input id="increase-input" class="action-button"  type="submit" value="+">
                         </form>
-                        <form id="decrease-form" class="actions" method="post" action="edit_product.php">
+                        <form id="decrease-form" class="action-box" method="post" action="edit_product.php">
                             <input type="hidden" name="product_id" value="<?= $item['ID'] ?>">
                             <input type="hidden" name="action" value="decrease">
-                            <input id="#decrease" type="submit" value="-">
+                            <input id="decrease-input" class="action-button" type="submit" value="-">
                         </form>
-                        <form id="delete-form" class="actions" method="post" action="delete_product.php">
+                        <form id="delete-form" class="action-box" method="post" action="delete_product.php">
                             <input type="hidden" name="product_id" value="<?= $item['ID'] ?>">
-                            <input type="submit" value="Usuń">
+                            <input id="delete-input" class="action-button" type="submit" value="Usuń">
                         </form>
                     </td>
                 </tr>
