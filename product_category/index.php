@@ -7,7 +7,7 @@ if (isset($conn)) {
     $stmt->execute();
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
-    throw new Exception("Nie połączono się z bazą danych!");
+    die("Nie połączono się z bazą danych!");
 }
 ?>
 
@@ -104,7 +104,7 @@ if (isset($conn)) {
                         </div>
 
                         <div class="add-to-cart-button">
-                            <a href="/shopping_cart/index.php?product_id=<?= $product['ID'] ?>">
+                            <a href="../add_to_cart.php?product_id=<?= $product['ID'] ?>">
                                 <div class="cart-button-area">
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </div>

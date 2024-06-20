@@ -118,8 +118,8 @@ form.search-bar::after {
 /*Header - Navigation panel*/
 .logo-block,
 #products-block {
-    border-top: black 1px solid;
-    border-bottom: black 1px solid;
+    /*border-top: black 1px solid;*/
+    /*border-bottom: black 1px solid;*/
     font-family: 'Teko', sans-serif;
     font-size: 1.25em;
 }

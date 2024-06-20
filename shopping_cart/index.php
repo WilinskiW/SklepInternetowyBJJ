@@ -154,7 +154,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
                     </td>
                 </tr>
             <?php
-            $sum_price += $item['Price'];
+            $sum_price += $item['Price']*$item['Quantity'];
             endforeach; ?>
         </table>
         <div id="summarize-container">
