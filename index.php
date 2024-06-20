@@ -108,7 +108,9 @@ else{
                     <div class="product-wrapper">
                         <div class="product-info">
                             <h4>
-                                <a class="product-name" href=""><?= $product['Name'] ?></a>
+                                <a class="product-name" href="/product_info/index.php?product_id=
+                                <?= $product['ID'] ?>"><?= $product['Name'] ?></a>
+
                             </h4>
                             <p><strong><?= $product['Price'] ?> zł</strong></p>
                         </div>
