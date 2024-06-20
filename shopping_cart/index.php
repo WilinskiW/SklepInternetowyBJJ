@@ -100,11 +100,11 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </div>
     <nav id="products-block">
-        <div id="men-products" class="product"><a class="category-href" href="?category=Mężczyźni">Mężczyźni</a>
+        <div id="men-products" class="product"><a class="category-href" href="../product_category/index.php?category=Mężczyźni">Mężczyźni</a>
         </div>
-        <div id="woman-products" class="product"><a class="category-href" href="?category=Kobiety">Kobiety</a>
+        <div id="woman-products" class="product"><a class="category-href" href="../product_category/index.php?category=Kobiety">Kobiety</a>
         </div>
-        <div id="kid-products" class="product"><a class="category-href" href="?category=Dzieci">Dzieci</a>
+        <div id="kid-products" class="product"><a class="category-href" href="../product_category/index.php?category=Dzieci">Dzieci</a>
         </div>
     </nav>
 </header>

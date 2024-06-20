@@ -22,16 +22,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['product_id'])) {
         }
 
     } else {
-        // Użytkownik nie jest zalogowany, użyj sesji do przechowywania koszyka
         if (!isset($_SESSION['cart'])) {
             $_SESSION['cart'] = array();
         }
 
         if (array_key_exists($product_id, $_SESSION['cart'])) {
-            // Produkt jest już w koszyku, zaktualizuj ilość
             $_SESSION['cart'][$product_id]++;
         } else {
-            // Produktu nie ma jeszcze w koszyku, dodaj nowy wpis
             $_SESSION['cart'][$product_id] = 1;
         }
 

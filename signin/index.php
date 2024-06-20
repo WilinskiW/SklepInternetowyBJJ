@@ -1,3 +1,30 @@
+<?php
+// Ustawienie czasu wygaśnięcia sesji na 30 minut
+$expire = 30*60; // 30 minut
+session_set_cookie_params($expire);
+session_start();
+
+include_once '../db_connect.php';
+
+$user = new User($conn);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['log-email']) && isset($_POST['log-password'])) {
+        $user->loginUser($_POST['log-email'], $_POST['log-password']);
+    } elseif (isset($_POST['register-firstname'])
+        && isset($_POST['register-lastname'])
+        && isset($_POST['register-email'])
+        && isset($_POST['register-address'])
+        && isset($_POST['register-postal_code'])
+        && isset($_POST['register-password'])) {
+        $user->registerUser($_POST['register-firstname'],
+            $_POST['register-lastname'], $_POST['register-email'],
+            $_POST['register-address'], $_POST['register-postal_code'],
+            password_hash($_POST['register-password'], PASSWORD_DEFAULT));
+    }
+}
+?>
+
 <!doctype html>
 <html lang="pl">
 <head>
@@ -37,7 +64,7 @@
         <div id="login" class="container-block">
             <h1>Zaloguj się</h1>
             <div class="form-block">
-                <form method="post" id="login-form-input" class="form-input" action="log_in.php">
+                <form method="post" id="login-form-input" class="form-input">
                     <div class="input-text">
                         <input type="text" id="log-login" class="input" name="log-email" placeholder="Email"
                                autocomplete="off" required>
@@ -60,7 +87,7 @@
         <div id="register" class="container-block">
             <h1>Zarejestruj się</h1>
             <div class="form-block">
-                <form method="post" id="register-form-input" class="form-input" action="register.php">
+                <form method="post" id="register-form-input" class="form-input">
                     <div class="input-text">
                         <input type="text" class="input" name="register-firstname" placeholder="Imię"
                                autocomplete="off" required>

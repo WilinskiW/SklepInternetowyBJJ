@@ -6,9 +6,9 @@ session_start();
 
 include '../db_connect.php';
 
-if (!isset($user['user_id'])) {
-    header("Location: ../index.php");
-}
+//if (!isset($user['user_id'])) {
+//    header("Location: ../index.php");
+//}
 
 if (isset($conn)) {
     $user_id = $_SESSION['user_id'];
