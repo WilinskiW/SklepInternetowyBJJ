@@ -29,20 +29,6 @@ a {
     margin: 10px;
 }
 
-/*#phone-number-contact {*/
-/*    display: flex;*/
-/*    padding: 15px;*/
-/*    grid-area: contact;*/
-/*    color: var(--black-color);*/
-/*}*/
-
-
-/*#email-contact {*/
-/*    display: flex;*/
-/*    grid-area: contact;*/
-/*    padding: 15px;*/
-/*}*/
-
 
 #phone-number-contact:hover,
 #email-contact:hover,
@@ -99,7 +85,7 @@ form.search-bar::after {
 #options {
     display: flex;
     padding: 15px;
-    justify-content: space-between;
+    justify-content: space-evenly;
     grid-area: options;
     -webkit-user-select: none;
     -webkit-touch-callout: none;

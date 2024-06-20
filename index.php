@@ -69,10 +69,6 @@ else{
             <i class="fa-solid fa-cart-shopping"></i>
             <a href="shopping_cart/index.php">Koszyk</a>
         </div>
-        <div id="option_menu_sell_product" class="header_option">
-            <i class="fa-solid fa-paper-plane"></i>
-            <a href="signin/index.php">Dodaj ogłoszenie</a>
-        </div>
     </div>
     <div class="logo-block">
         <div class="logo">

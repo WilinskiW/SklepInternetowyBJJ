@@ -86,10 +86,6 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
             <i class="fa-solid fa-cart-shopping"></i>
             <a href="#">Koszyk</a>
         </div>
-        <div id="option_menu_sell_product" class="header_option">
-            <i class="fa-solid fa-paper-plane"></i>
-            <a href="../signin/index.php">Dodaj ogłoszenie</a>
-        </div>
     </div>
     <div class="logo-block">
         <div class="logo">
