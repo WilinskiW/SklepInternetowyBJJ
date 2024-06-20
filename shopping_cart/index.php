@@ -1,13 +1,13 @@
 <?php
-// Rozpoczęcie sesji
+// Ustawienie czasu wygaśnięcia sesji na 30 minut
+$expire = 30*60; // 30 minut
+session_set_cookie_params($expire);
 session_start();
-// Dołączenie skryptu do połączenia z bazą danych
 include '../db_connect.php';
 
 // Pobranie produktów w koszyku
 $cart_items = array();
 
-// Sprawdzenie, czy użytkownik jest zalogowany
 if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
     $user_id = $_SESSION['user_id']; // Zalogowany użytkownik
 
@@ -15,7 +15,6 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
     $stmt->execute(['user_id' => $user_id]);
     $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
-    // Użytkownik nie jest zalogowany, użyj sesji do przechowywania koszyka
     if (isset($_SESSION['cart'])) {
         foreach ($_SESSION['cart'] as $product_id => $quantity) {
             $stmt = $conn->prepare("SELECT * FROM Products WHERE ID = :product_id");
