@@ -59,7 +59,7 @@ else{
     <div id="options">
         <div id="option_menu_userAccount" class="header_option">
             <i class="fa-solid fa-user"></i>
-            <?php if($_SESSION['user_id'] != ''){?>
+            <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != ''){?>
                 <a href="account_info/index.php">Twoje konto</a>
             <?php } else { ?>
             <a href="signin/index.php">Zaloguj się</a>

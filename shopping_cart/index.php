@@ -76,7 +76,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
     <div id="options">
         <div id="option_menu_userAccount" class="header_option">
             <i class="fa-solid fa-user"></i>
-            <?php if ($_SESSION['user_id'] != '') { ?>
+            <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
                 <a href="../account_info/index.php">Twoje konto</a>
             <?php } else { ?>
                 <a href="../signin/index.php">Zaloguj się</a>
@@ -137,11 +137,17 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
                     <td><?= $item['Price'] ?> zł</td>
                     <td><?= $item['Quantity'] ?> szt.</td>
                     <td>
-                        <form method="post" action="edit_product.php">
+                        <form id="increase-form" class="actions" method="post" action="edit_product.php">
                             <input type="hidden" name="product_id" value="<?= $item['ID'] ?>">
-                            <input type="submit" value="Edytuj">
+                            <input type="hidden" name="action" value="increase">
+                            <input id="#increase" type="submit" value="+">
                         </form>
-                        <form method="post" action="delete_product.php">
+                        <form id="decrease-form" class="actions" method="post" action="edit_product.php">
+                            <input type="hidden" name="product_id" value="<?= $item['ID'] ?>">
+                            <input type="hidden" name="action" value="decrease">
+                            <input id="#decrease" type="submit" value="-">
+                        </form>
+                        <form id="delete-form" class="actions" method="post" action="delete_product.php">
                             <input type="hidden" name="product_id" value="<?= $item['ID'] ?>">
                             <input type="submit" value="Usuń">
                         </form>

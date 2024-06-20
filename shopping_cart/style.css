@@ -60,6 +60,10 @@ td {
     height: auto;
 }
 
+.actions {
+    display: flex;
+}
+
 #summarize-container {
     display: flex;
     align-items: center;
