@@ -170,7 +170,8 @@ if (isset($_SESSION['user_id'])) {
             </div>
         <?php else: ?>
             <div id="login-reminder">
-                <p>Musisz się <a href="../signin/index.php">zalogować</a>, aby złożyć zamówienie.</p>
+                <p>Musisz się <a style="color: var(--red-color); text-decoration: underline"
+                                 href="../signin/index.php">zalogować</a>, aby złożyć zamówienie.</p>
             </div>
         <?php endif; ?>
     </div>

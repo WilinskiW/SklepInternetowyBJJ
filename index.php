@@ -147,9 +147,10 @@ if (isset($_COOKIE['recently_viewed'])) {
         </div>
     </section>
     <span id="produkty-span">Ostatnio oglądane</span>
+    <?php if (isset($recently_viewed)){ ?>
     <section class="last-seen-gallery">
         <?php
-        const last_seen_amount = 4;
+        define("last_seen_amount", 4);
         $counter = 0;
         foreach ($recent_products as $recent_product):?>
             <div class="product-block">
@@ -181,6 +182,7 @@ if (isset($_COOKIE['recently_viewed'])) {
             }
         endforeach; ?>
     </section>
+    <?php } ?>
 </main>
 <footer>
     <p>&COPY; Wszelkie prawa zastrzeżone</p>

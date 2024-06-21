@@ -1,9 +1,15 @@
 <?php
-// Rozpoczęcie sesji
+$expire = 30*60; // 30 minut
+session_set_cookie_params($expire);
 session_start();
 
 // Dołączenie skryptu do połączenia z bazą danych
 include '../db_connect.php';
+
+if(!isset($_GET['product_id']))
+{
+    header("Location: ../index.php");
+}
 
 $product_id = $_GET['product_id'];
 
@@ -32,9 +38,6 @@ if (!in_array($product_id, $recently_viewed)) {
     <meta charset="UTF-8">
     <title><?= $product['Name'] ?></title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="/css/header_footer.css">
-    <link rel="stylesheet" href="/css/product_gallery.css">
-    <link rel="stylesheet" href="/css/logo.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
