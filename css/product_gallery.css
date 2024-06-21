@@ -36,12 +36,13 @@
 .product-image {
     max-width: 100%;
     width: auto;
-    height: 550px;
+    height: 80%;
     object-fit: contain;
 }
 
 .product-info {
     width: 80%;
+    height: 20%;
 }
 
 .product-name {
