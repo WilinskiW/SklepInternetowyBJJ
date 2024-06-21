@@ -12,6 +12,15 @@ main {
     font-family: Teko, sans-serif;
 }
 
+#container-container {
+    border-left: 4px solid var(--red-color);
+    border-radius: 3px;
+}
+
+h3 {
+    display: flex;
+    justify-content: center;
+}
 
 #product-info-container {
     display: flex;
@@ -21,9 +30,6 @@ main {
 
 #more-info-block {
     width: 100%;
-    height: 500px;
-    border-left: 4px solid var(--red-color);
-    border-radius: 3px;
 }
 
 #more-info {
@@ -35,23 +41,16 @@ main {
     font-family: 'Montserrat', 'Teko', Arial, sans-serif, 'Arial', 'Helvetica', sans-serif;
 }
 
-#add-to-cart {
+#add-comment-rating-container {
+    margin: 40px 40px 40px 80px;
+}
+
+#add-comment-rating-form {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
 }
 
-#add-button {
-    height: 50px;
-    width: 300px;
-    font-weight: bold;
-    background-color: var(--moreRed--color);
-    box-shadow: 0 2px 5px #8a8a8a;
-    border: none;
-    border-radius: 4px;
+#add-comment-rating-form {
+    margin: 10px;
 }
 
-#add-button:hover {
-    text-decoration: underline;
-    background-color: #ff2020;
-    box-shadow: 1px 4px 5px #ff1616;
-}

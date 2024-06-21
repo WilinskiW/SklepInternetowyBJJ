@@ -31,6 +31,18 @@ if (!in_array($product_id, $recently_viewed)) {
 
 ?>
 
+<?php
+// Jeśli formularz został przesłany
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['comment']) && isset($_POST['rating'])) {
+    $comment = $_POST['comment'];
+    $rating = $_POST['rating'];
+
+    // Zapisz komentarz i ocenę w bazie danych
+    $stmt = $conn->prepare("INSERT INTO ratings (Users_ID, Products_ID, Rating, Comment) VALUES (:product_id, :user_id, :comment, :ratingW)");
+    $stmt->execute(['user_id' => $_SESSION['user_id'], 'product_id' => $product_id, 'rating' => $rating, 'comment' => $comment]);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -138,23 +150,49 @@ if (!in_array($product_id, $recently_viewed)) {
                 </div>
             </div>
         </div>
-        <div id="more-info-block">
-            <div id="more-info">
-                <h2><?= $product['Name'] ?></h2>
-                <div class="product-description">
-                    <h4>Opis produktu:</h4>
-                    <p class="description-text"><?= $product['Description'] ?></p>
-                </div>
-                <div class="product-description">
-                    <h4>Stan produktu w magazynie:</h4>
-                    <p class="description-text">Aktualna ilość: <?= $product['Amount'] ?> </p>
-                </div>
-                <div class="product-description">
-                    <h4>Cena produktu:</h4>
-                    <p class="description-text"><strong><?= $product['Price'] ?> zł</strong></p>
+        <div id="container-container">
+            <div id="more-info-block">
+                <div id="more-info">
+                    <h2><?= $product['Name'] ?></h2>
+                    <div class="product-description">
+                        <h4>Opis produktu:</h4>
+                        <p class="description-text"><?= $product['Description'] ?></p>
+                    </div>
+                    <div class="product-description">
+                        <h4>Stan produktu w magazynie:</h4>
+                        <p class="description-text">Aktualna ilość: <?= $product['Amount'] ?> </p>
+                    </div>
+                    <div class="product-description">
+                        <h4>Cena produktu:</h4>
+                        <p class="description-text"><strong><?= $product['Price'] ?> zł</strong></p>
+                    </div>
                 </div>
             </div>
-            <div></div>
+            <h3>Dodaj komentarz i oceń!</h3>
+                <div id="add-comment-rating-container">
+                    <?php if (isset($_SESSION['user_id'])) { ?>
+                    <form id="add-comment-rating-form" method="post">
+                        <textarea id="comment-area" name="comment" placeholder="Dodaj komentarz"></textarea>
+                        <input id="rating-input" type="number" name="rating" min="1" max="5" placeholder="Ocena (1-5)">
+                        <input id="add-comment-input" type="submit" value="Dodaj komentarz">
+                    </form>
+
+                    <!--                Wyświetlanie komentarzy i ocen -->
+                    <!--                <div id="reviews">-->
+                    <!--                    --><?php //foreach ($reviews as $review): ?>
+                    <!--                        <div class="review">-->
+                    <!--                            <div class="rating">Ocena: -->
+                    <?php //= $review['Rating'] ?><!--/5</div>-->
+                    <!--                            <div class="comment">--><?php //= $review['Comment'] ?><!--</div>-->
+                    <!--                            <div class="date">--><?php //= $review['Date'] ?><!--</div>-->
+                    <!--                        </div>-->
+                    <!--                    --><?php //endforeach; ?>
+                    <!--                </div>-->
+                </div>
+            <?php } else { ?>
+                <p style="font-family: 'Montserrat', sans-serif;">
+                    Aby dodać komentarz i ocenę trzeba być <a href="../signin/index.php">zalogowanym!</a></p>
+            <?php } ?>
         </div>
     </div>
 </main>
