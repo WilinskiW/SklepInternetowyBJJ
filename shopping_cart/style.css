@@ -14,7 +14,7 @@ main {
 }
 
 
-.container {
+#cart-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -38,11 +38,11 @@ p {
     align-items: center;
 }
 
-.cart-table {
+.product-table {
     width: 100%;
 }
 
-.cart-table, th, td, tr {
+.product-table, th, td, tr {
     border: 2px solid;
     text-align: center;
     border-collapse: collapse;

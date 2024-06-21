@@ -59,7 +59,7 @@ if (isset($_COOKIE['recently_viewed'])) {
         <div id="search-block">
             <link rel="stylesheet"
                   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-            <form class="search-bar">
+            <form class="search-bar" action="search_results/index.php">
                 <input type="text" placeholder="Wpisz czego szukasz" name="search">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
@@ -110,7 +110,7 @@ if (isset($_COOKIE['recently_viewed'])) {
 <main>
     <a href="#"><img id="banner" src="jpg/bjj_kolekcja_red.jpg" alt="kolekcja: t-shirty 2024"></a>
     <section class="product-gallery">
-        <span id="produkty-span">Produkty</span>
+        <span class="produkty-span">Produkty</span>
         <div class="image-gallery">
             <?php
             const product_amount = 8;
@@ -122,7 +122,7 @@ if (isset($_COOKIE['recently_viewed'])) {
                     <div class="product-wrapper">
                         <div class="product-info">
                             <h4>
-                                <a class="product-name" href="/product_info/index.php?product_id=
+                                <a class="product-name" href="product_info/index.php?product_id=
                                 <?= $product['ID'] ?>"><?= $product['Name'] ?></a>
 
                             </h4>
@@ -146,7 +146,7 @@ if (isset($_COOKIE['recently_viewed'])) {
             endforeach; ?>
         </div>
     </section>
-    <span id="produkty-span">Ostatnio oglądane</span>
+    <span class="produkty-span">Ostatnio oglądane</span>
     <?php if (isset($recently_viewed)){ ?>
     <section class="last-seen-gallery">
         <?php
@@ -159,7 +159,7 @@ if (isset($_COOKIE['recently_viewed'])) {
                 <div class="product-wrapper">
                     <div class="product-info">
                         <h4>
-                            <a class="product-name" href="/product_info/index.php?product_id=
+                            <a class="product-name" href="product_info/index.php?product_id=
                                 <?= $recent_product['ID'] ?>"><?= $recent_product['Name'] ?></a>
 
                         </h4>

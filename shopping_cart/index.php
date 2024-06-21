@@ -66,7 +66,7 @@ if (isset($_SESSION['user_id'])) {
         <div id="search-block">
             <link rel="stylesheet"
                   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-            <form class="search-bar">
+            <form class="search-bar" action="../search_results/index.php">
                 <input type="text" placeholder="Wpisz czego szukasz" name="search">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
@@ -109,7 +109,7 @@ if (isset($_SESSION['user_id'])) {
     </nav>
 </header>
 <main>
-    <div class="container">
+    <div id="cart-container">
         <?php if (empty($cart_items)): ?>
             <div id="no-product-info">
                 <h1>Twój koszyk jest pusty</h1>
@@ -117,7 +117,7 @@ if (isset($_SESSION['user_id'])) {
             </div>
         <?php else: ?>
         <h1>Twój koszyk:</h1>
-        <table class="cart-table">
+        <table class="product-table">
             <tr>
                 <th>Podgląd produktu</th>
                 <th>Nazwa</th>

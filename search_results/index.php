@@ -3,20 +3,18 @@
 $expire = 30 * 60; // 30 minut
 session_set_cookie_params($expire);
 session_start();
-include_once "../db_connect.php";
 
-if (!isset($_GET['category'])) {
-    $category = 'Mężczyźni';
-} else {
-    $category = $_GET['category']; // Pobranie kategorii z URL
-}
+// Dołączenie skryptu do połączenia z bazą danych
+include '../db_connect.php';
 
-if (isset($conn)) {
-    $stmt = $conn->prepare("SELECT * FROM Products WHERE Category = :category");
-    $stmt->execute(['category' => $category]);
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} else {
-    die("Nie połączono się z bazą danych!");
+$search_results = array();
+
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['search'])) {
+    $search_query = $_GET['search'];
+
+    $stmt = $conn->prepare("SELECT * FROM Products WHERE Name LIKE :search_query");
+    $stmt->execute(['search_query' => '%' . $search_query . '%']);
+    $search_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
 
@@ -25,12 +23,11 @@ if (isset($conn)) {
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Sklep BJJ - Produkty</title>
+    <title>Sklep BJJ - Wynik wyszukiwania</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="/css/logo.css">
     <link rel="stylesheet" href="/css/header_footer.css">
     <link rel="stylesheet" href="/css/product_gallery.css">
-    ..
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300..700&display=swap" rel="stylesheet">
@@ -57,7 +54,7 @@ if (isset($conn)) {
         <div id="search-block">
             <link rel="stylesheet"
                   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-            <form class="search-bar" action="../search_results/index.php">
+            <form class="search-bar">
                 <input type="text" placeholder="Wpisz czego szukasz" name="search">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
@@ -103,34 +100,43 @@ if (isset($conn)) {
     </nav>
 </header>
 <main>
-    <section class="product-gallery">
-        <span class="produkty-span">Produkty</span>
-        <div class="image-gallery">
-            <?php foreach ($products as $product): ?>
-                <div class="product-block">
-                    <img class="product-image" src="data:image/jpeg;base64,<?= base64_encode($product['Image']) ?>"
-                         alt="<?= $product['Name'] ?>">
-                    <div class="product-wrapper">
-                        <div class="product-info">
-                            <h4>
-                                <a class="product-name" href="../product_info/index.php?product_id=
+    <div id="search-container">
+        <?php if (empty($search_results)): ?>
+            <div id="no-product-info">
+                <h1>Brak wyników wyszukiwania</h1>
+                <p>Nie znaleziono żadnych produktów pasujących do Twojego zapytania.</p>
+            </div>
+        <?php else: ?>
+        <section class="product-gallery">
+            <span class="produkty-span">Wyniki wyszukiwania:</span>
+            <div class="image-gallery">
+                <?php foreach ($search_results as $product): ?>
+                    <div class="product-block">
+                        <img class="product-image" src="data:image/jpeg;base64,<?= base64_encode($product['Image']) ?>"
+                             alt="<?= $product['Name'] ?>">
+                        <div class="product-wrapper">
+                            <div class="product-info">
+                                <h4>
+                                    <a class="product-name" href="../product_info/index.php?product_id=
                                 <?= $product['ID'] ?>"><?= $product['Name'] ?></a>
-                            </h4>
-                            <p><strong><?= $product['Price'] ?> zł</strong></p>
-                        </div>
-
-                        <div class="add-to-cart-button">
-                            <a href="../add_to_cart.php?product_id=<?= $product['ID'] ?>">
-                                <div class="cart-button-area">
-                                    <i class="fa-solid fa-cart-shopping"></i>
-                                </div>
-                            </a>
+                                </h4>
+                                <p><strong><?= $product['Price'] ?> zł</strong></p>
+                            </div>
+                            <div class="add-to-cart-button">
+                                <a href="../add_to_cart.php?product_id=<?= $product['ID'] ?>">
+                                    <div class="cart-button-area">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach ?>
-    </section>
+                <?php endforeach ?>
+        </section>
+        <?php endif; ?>
+    </div>
 </main>
+
 <footer>
     <p>&COPY; Wszelkie prawa zastrzeżone</p>
 </footer>

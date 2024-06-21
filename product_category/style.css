@@ -13,4 +13,7 @@ main {
 }
 
 
-
+#product-info-container {
+    align-items: flex-start; !important;
+    margin: 100px;
+}
