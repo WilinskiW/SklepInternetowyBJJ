@@ -1,6 +1,6 @@
 <?php
 // Ustawienie czasu wygaśnięcia sesji na 30 minut
-$expire = 30*60; // 30 minut
+$expire = 30 * 60; // 30 minut
 session_set_cookie_params($expire);
 session_start();
 
@@ -12,27 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] == "GET" && isset($_GET['reset-submit-input'])) {
     header("Location: ../index.php");
 }
 
-if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['dump-db'])) {
-    $dbhost = 'localhost';  // host bazy danych
-    $dbuser = 'root';   // nazwa użytkownika bazy danych
-    $dbpass = '';   // hasło do bazy danych
-    $dbname = 'sklep_internetowy_bjj';   // nazwa bazy danych
-
-    $dumpfile = 'backup.sql';
-
-    exec("mysqldump --user=$dbuser --password=$dbpass --host=$dbhost $dbname > $dumpfile");
-
-    header('Content-Description: File Transfer');
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="'.basename($dumpfile).'"');
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate');
-    header('Pragma: public');
-    header('Content-Length: ' . filesize($dumpfile));
-    flush();
-    readfile($dumpfile);
-    exit;
-}
 ?>
 
 <!doctype html>

@@ -30,7 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset-text-input'])) {
     $user_id = $_SESSION['user_id']; // Zalogowany użytkownik
     $new_password = password_hash($_POST['reset-text-input'], PASSWORD_DEFAULT); // Nowe hasło
 
-    // Aktualizacja hasła w bazie danych
     $stmt = $conn->prepare("UPDATE Users SET Password = :new_password WHERE ID = :user_id");
     $stmt->execute(['new_password' => $new_password, 'user_id' => $user_id]);
 

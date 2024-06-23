@@ -26,7 +26,7 @@ if (isset($_COOKIE['recently_viewed'])) {
 
 if (!in_array($product_id, $recently_viewed)) {
     $recently_viewed[] = $product_id;
-    setcookie('recently_viewed', json_encode($recently_viewed), time() + (86400 * 30), "/"); // Plik cookie wygasa po 30 dniach
+    setcookie('recently_viewed', json_encode($recently_viewed), time() + 3600 * 2, "/");
 }
 
 ?>
@@ -36,10 +36,12 @@ if (!in_array($product_id, $recently_viewed)) {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['comment']) && isset($_POST['rating'])) {
     $comment = $_POST['comment'];
     $rating = $_POST['rating'];
+    $user_id = $_SESSION['user_id'];
 
     // Zapisz komentarz i ocenę w bazie danych
-    $stmt = $conn->prepare("INSERT INTO ratings (Users_ID, Products_ID, Rating, Comment) VALUES (:product_id, :user_id, :comment, :ratingW)");
-    $stmt->execute(['user_id' => $_SESSION['user_id'], 'product_id' => $product_id, 'rating' => $rating, 'comment' => $comment]);
+    $stmt = $conn->prepare("INSERT INTO ratings (Users_ID, Products_ID, Rating, Comment) 
+    VALUES ('$user_id', '$product_id','$rating','$comment')");
+    exec($stmt);
 }
 ?>
 
@@ -169,29 +171,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['comment']) && isset($_
                 </div>
             </div>
             <h3>Dodaj komentarz i oceń!</h3>
-                <div id="add-comment-rating-container">
-                    <?php if (isset($_SESSION['user_id'])) { ?>
-                    <form id="add-comment-rating-form" method="post">
-                        <textarea id="comment-area" name="comment" placeholder="Dodaj komentarz"></textarea>
-                        <input id="rating-input" type="number" name="rating" min="1" max="5" placeholder="Ocena (1-5)">
-                        <input id="add-comment-input" type="submit" value="Dodaj komentarz">
-                    </form>
-
-                    <!--                Wyświetlanie komentarzy i ocen -->
-                    <!--                <div id="reviews">-->
-                    <!--                    --><?php //foreach ($reviews as $review): ?>
-                    <!--                        <div class="review">-->
-                    <!--                            <div class="rating">Ocena: -->
-                    <?php //= $review['Rating'] ?><!--/5</div>-->
-                    <!--                            <div class="comment">--><?php //= $review['Comment'] ?><!--</div>-->
-                    <!--                            <div class="date">--><?php //= $review['Date'] ?><!--</div>-->
-                    <!--                        </div>-->
-                    <!--                    --><?php //endforeach; ?>
-                    <!--                </div>-->
+            <div id="add-comment-rating-container">
+                <?php if (isset($_SESSION['user_id'])) { ?>
+                <form id="add-comment-rating-form" method="post">
+                    <textarea id="comment-area" name="comment" placeholder="Dodaj komentarz"></textarea>
+                    <input id="rating-input" type="number" name="rating" min="1" max="5" placeholder="Ocena (1-5)">
+                    <input id="add-comment-input" type="submit" value="Dodaj komentarz">
+                </form>
+            </div>
+            <?php if(isset($reviews)) {?>
+                <div id="reviews">
+                    <?php foreach ($reviews as $review): ?>
+                        <div class="review">
+                            <div class="rating">Ocena:
+                                <?= $review['Rating'] ?>/5
+                            </div>
+                            <div class="comment"><?= $review['Comment'] ?></div>
+                            <div class="date"><?= $review['Date'] ?></div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
+            <?php } ?>
+            </div>
             <?php } else { ?>
                 <p style="font-family: 'Montserrat', sans-serif;">
-                    Aby dodać komentarz i ocenę trzeba być <a href="../signin/index.php">zalogowanym!</a></p>
+                    Aby dodać komentarz i ocenę trzeba być <a style="color: var(--red-color); text-decoration: underline"
+                                                              href="../signin/index.php">zalogowanym!</a></p>
             <?php } ?>
         </div>
     </div>

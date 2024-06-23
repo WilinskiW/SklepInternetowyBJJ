@@ -8,7 +8,7 @@ include_once "../db_connect.php";
 if (!isset($_GET['category'])) {
     $category = 'Mężczyźni';
 } else {
-    $category = $_GET['category']; // Pobranie kategorii z URL
+    $category = $_GET['category'];
 }
 
 if (isset($conn)) {

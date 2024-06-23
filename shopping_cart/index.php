@@ -132,7 +132,7 @@ if (isset($_SESSION['user_id'])) {
                     <td class="img-cell"><img class="cart-image"
                                               src="data:image/jpeg;base64,<?= base64_encode($item['Image']) ?>"
                                               alt="<?= $item['Name'] ?>"></td>
-                    <td><a class="product-name" href="/product_info/index.php?product_id=
+                    <td><a class="product-name" href="../product_info/index.php?product_id=
                                 <?= $item['ID'] ?>"><?= $item['Name'] ?></a></td>
                     <td><?= $item['Price'] ?> zł</td>
                     <td><?= $item['Quantity'] ?> szt.</td>
