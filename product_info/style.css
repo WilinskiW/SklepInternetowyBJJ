@@ -42,7 +42,7 @@ h3 {
 }
 
 #add-comment-rating-container {
-    margin: 40px 40px 40px 80px;
+    margin: 40px 40px 80px;
 }
 
 #add-comment-rating-form {
@@ -51,6 +51,18 @@ h3 {
 }
 
 #add-comment-rating-form {
-    margin: 10px;
+}
+
+#reviews {
+    display: flex;
+    flex-direction: column;
+}
+
+#review-h3 {
+
+}
+
+.rating, .comment {
+    font-size: 1.25rem;
 }
 
