@@ -38,11 +38,11 @@ p {
     align-items: center;
 }
 
-.product-table {
+.info-table {
     width: 100%;
 }
 
-.product-table, th, td, tr {
+.info-table, th, td, tr {
     border: 2px solid;
     text-align: center;
     border-collapse: collapse;

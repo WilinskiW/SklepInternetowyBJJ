@@ -117,7 +117,7 @@ if (isset($_SESSION['user_id'])) {
             </div>
         <?php else: ?>
         <h1>Twój koszyk:</h1>
-        <table class="product-table">
+        <table class="info-table">
             <tr>
                 <th>Podgląd produktu</th>
                 <th>Nazwa</th>

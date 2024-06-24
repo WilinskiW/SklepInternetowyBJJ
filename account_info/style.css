@@ -4,6 +4,10 @@
     --moreRed--color: hsl(355, 98%, 64%);
 }
 
+a:hover{
+    color: var(--red-color);
+}
+
 h1 {
     display: flex;
     justify-content: center;
@@ -19,9 +23,49 @@ main {
     margin: 20px;
 }
 
-.user-box {
+h3 {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    background-color: var(--red-color);
+}
+
+.user-container {
+    display: flex;
+    align-items: flex-start;
+    margin: 60px;
+}
+
+.user-info-box, .user-orders {
+    border: 2px solid var(--red-color);
+    border-radius: 5px;;
+    padding: 50px;
+    background-color: #F8F8F8;
+}
+
+.user-info-box {
+    width: 20%;
+}
+
+.user-orders {
+    width: 80%;
+}
+
+.info-table, th, td, tr {
+    border: 2px solid;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+#order-table {
+    width: 100%;
+}
+
+td {
+    font-family: 'Montserrat', 'Teko', Arial, sans-serif, 'Arial', 'Helvetica', sans-serif;
+}
+
+
+#user-info-text {
     align-items: center;
 }
 
