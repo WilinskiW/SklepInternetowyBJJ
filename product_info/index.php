@@ -38,8 +38,6 @@ function addToRecentViewed($product_id)
         $_SESSION['recently_viewed'] = $recently_viewed;
     }
 }
-
-
 ?>
 
 <?php
@@ -57,6 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare("INSERT INTO ratings (Users_ID, Products_ID, Rating, Comment) 
     VALUES ($user_id, $product_id,$rating,'$comment')");
     $stmt->execute();
+
+    header("Location: index.php?product_id=$product_id");
 }
 ?>
 

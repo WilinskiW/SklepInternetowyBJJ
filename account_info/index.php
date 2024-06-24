@@ -58,7 +58,6 @@ function getOrders($conn)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 ?>
 <!doctype html>
 <html lang="pl">
@@ -124,32 +123,50 @@ function getOrders($conn)
         </div>
         <div class="user-orders">
             <h3>Historia zamówień</h3>
-            <?php if(isset($orders)) { ?>
-            <table id="order-table" class="info-table">
-                <tr>
-                    <th>Numer zamówienia</th>
-                    <th>Data zamówienia</th>
-                    <th>Nazwa produktu</th>
-                    <th>Cena produktu</th>
-                    <th>Ilość</th>
-                    <th>Status</th>
-                    <th>Łączna cena za produkty</th>
-                </tr>
-                <tr>
-                   <?php foreach ($orders as $order): ?>
-                <tr>
-                    <td><?= $order['Order_ID'] ?></td>
-                    <td><?= $order['Order_Date'] ?></td>
-                    <td><a class="product-name" href="../product_info/index.php?product_id=
-                                <?= $order['Products_ID'] ?>"><?= $order['Product_Name']?></a></td>
-                    <td><?= $order['Price_Per_Product'] ?> zł</td>
-                    <td><?= $order['Quantity'] ?></td>
-                    <td><?= $order['Status'] ?></td>
-                    <td><?= $order['Total_Price'] ?></td>
-                </tr>
-                <?php
-            endforeach; ?>
-            </table>
+            <?php if (isset($orders)) { ?>
+                <table id="order-table" class="info-table">
+                    <tr>
+                        <th>Numer zamówienia</th>
+                        <th>Data zamówienia</th>
+                        <th>Nazwa produktu</th>
+                        <th>Cena produktu</th>
+                        <th>Ilość</th>
+                        <th>Status</th>
+                        <th>Łączna cena za produkty</th>
+                    </tr>
+                    <?php
+                    function same_order($o)
+                    {
+                        global $order;
+                        return $o['Order_ID'] == $order['Order_ID'];
+                    }
+
+                    $last_order_id = null;
+                    foreach ($orders as $order) {
+                        //Sprawdzenie czy mamy różne zamówienie
+                        if ($last_order_id != $order['Order_ID']) {
+                            $last_order_id = $order['Order_ID'];
+                            //Liczymy ilość produktów w danym zamówieniu
+                            $order_count = count(array_filter($orders, 'same_order'));
+                            ?>
+                            <tr>
+                                <td rowspan="<?= $order_count ?>"><?= $order['Order_ID'] ?></td>
+                                <td rowspan="<?= $order_count ?>"><?= $order['Order_Date'] ?></td>
+                                <td><?= $order['Product_Name'] ?></td>
+                                <td><?= $order['Price_Per_Product'] ?> zł</td>
+                                <td><?= $order['Quantity'] ?></td>
+                                <td rowspan="<?= $order_count ?>"><?= $order['Status'] ?></td>
+                                <td rowspan="<?= $order_count ?>"><?= $order['Total_Price'] ?></td>
+                            </tr>
+                        <?php } else { ?>
+                            <tr>
+                                <td><?= $order['Product_Name'] ?></td>
+                                <td><?= $order['Price_Per_Product'] ?> zł</td>
+                                <td><?= $order['Quantity'] ?></td>
+                            </tr>
+                        <?php }
+                    } ?>
+                </table>
             <?php } ?>
         </div>
     </div>

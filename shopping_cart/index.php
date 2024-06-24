@@ -2,14 +2,19 @@
 session_start();
 include '../db_connect.php';
 
+if(!isset($conn)){
+    die("Nie połączono się z bazą danych!");
+}
+
 // Pobranie produktów w koszyku
 $cart_items = array();
 
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id']; // Zalogowany użytkownik
 
-    $stmt = $conn->prepare("SELECT Products.*, Shopping_cart.Quantity FROM Shopping_cart JOIN Products ON Shopping_cart.Products_ID = Products.ID WHERE Shopping_cart.Users_ID = :user_id");
-    $stmt->execute(['user_id' => $user_id]);
+    $stmt = $conn->prepare("SELECT Products.*, Shopping_cart.Quantity FROM Shopping_cart 
+    JOIN Products ON Shopping_cart.Products_ID = Products.ID WHERE Shopping_cart.Users_ID = '$user_id'");
+    $stmt->execute();
     $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
     if (isset($_SESSION['cart'])) {
@@ -164,8 +169,9 @@ if (isset($_SESSION['user_id'])) {
         </div>
         <?php if (isset($_SESSION['user_id'])): ?>
             <div id="checkout-container">
-                <form method="post" action="../checkout/index.php">
-                    <input class="input-submit" type="submit" value="Złóż zamówienie">
+                <form method="post" action="createOrder.php">
+                    <input type="hidden" name="total_price" value="<?= $sum_price ?>">
+                    <input class="input-submit" name="submit_order" type="submit" value="Złóż zamówienie">
                 </form>
             </div>
         <?php else: ?>
