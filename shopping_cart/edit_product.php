@@ -30,16 +30,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id']) && isset
             $stmt->execute(['quantity' => $new_quantity, 'user_id' => $user_id, 'product_id' => $product_id]);
         }
     } else {
-        if (isset($_SESSION['cart'])) {
-            if ($action == 'increase') {
-                $_SESSION['cart'][$product_id]++;
-            } elseif ($action == 'decrease' && $_SESSION['cart'][$product_id] > 1) {
-                $_SESSION['cart'][$product_id]--;
-            } else {
-                unset($_SESSION['cart'][$product_id]);
-            }
+        // Gość
+        if (isset($_COOKIE['cart'])) {
+            $cart = unserialize($_COOKIE['cart']);
+        } else {
+            $cart = array();
         }
+
+        if ($action == 'increase') {
+            $cart[$product_id]++;
+        } elseif ($action == 'decrease' && $cart[$product_id] > 1) {
+            $cart[$product_id]--;
+        } else {
+            unset($cart[$product_id]);
+        }
+
+        setcookie('cart', serialize($cart), time() + (60 * 90), "/");
     }
     header("Location: index.php");
 }
-?>
+

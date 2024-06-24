@@ -11,8 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
         $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id]);
     } else {
         // Użytkownik nie jest zalogowany (SESJA)
-        if (isset($_SESSION['cart'])) {
-            unset($_SESSION['cart'][$product_id]);
+        if (isset($_COOKIE['cart'])) {
+            unset($_COOKIE['cart'][$product_id]);
         }
     }
     header("Location: index.php");
