@@ -17,8 +17,9 @@ if (isset($_SESSION['user_id'])) {
     $stmt->execute();
     $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
-    if (isset($_SESSION['cart'])) {
-        foreach ($_SESSION['cart'] as $product_id => $quantity) {
+    if (isset($_COOKIE['cart'])) {
+        $cart = unserialize($_COOKIE['cart']);
+        foreach ($cart as $product_id => $quantity) {
             $stmt = $conn->prepare("SELECT * FROM Products WHERE ID = :product_id");
             $stmt->execute(['product_id' => $product_id]);
             $product = $stmt->fetch(PDO::FETCH_ASSOC);

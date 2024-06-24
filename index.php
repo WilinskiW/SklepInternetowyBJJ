@@ -67,7 +67,7 @@ if (isset($_SESSION['recently_viewed'])) {
             <i class="fa-solid fa-user"></i>
             <?php if (isset($_SESSION['account_type']) && ($_SESSION['account_type'] == 'admin')) { ?>
                 <a href="admin_panel/index.php">Panel administracji</a>
-            <?php } else if (isset($_SESSION['user_id'])){ ?>
+            <?php } else if (isset($_SESSION['user_id'])) { ?>
                 <a href="account_info/index.php">Twoje konto</a>
             <?php } else { ?>
                 <a href="signin/index.php">Zaloguj się</a>

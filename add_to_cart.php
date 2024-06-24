@@ -4,7 +4,7 @@ include 'db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['product_id'])) {
     $product_id = $_GET['product_id'];
-    var_dump($_GET);
+
     if (isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id']; // Zalogowany użytkownik
 
@@ -15,25 +15,26 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['product_id'])) {
             $new_quantity = $item['Quantity'] + 1;
             $stmt = $conn->prepare("UPDATE Shopping_cart SET Quantity = :quantity WHERE Users_ID = :user_id AND Products_ID = :product_id");
             $stmt->execute(['quantity' => $new_quantity, 'user_id' => $user_id, 'product_id' => $product_id]);
-            var_dump($stmt);
         } else {
             $stmt = $conn->prepare("INSERT INTO Shopping_cart (Users_ID, Products_ID, Quantity) VALUES (:user_id, :product_id, 1)");
             $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id]);
         }
-
     } else {
-        if (!isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = array();
-        }
-
-        if (array_key_exists($product_id, $_SESSION['cart'])) {
-            $_SESSION['cart'][$product_id]++;
+        if (!isset($_COOKIE['cart'])) {
+            $cart = array();
         } else {
-            $_SESSION['cart'][$product_id] = 1;
+            $cart = unserialize($_COOKIE['cart']);
         }
 
+        if (array_key_exists($product_id, $cart)) {
+            $cart[$product_id]++;
+        } else {
+            $cart[$product_id] = 1;
+        }
+
+        setcookie('cart', serialize($cart), time() + (60 * 90), "/");
     }
     header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit;
 }
-?>
+
