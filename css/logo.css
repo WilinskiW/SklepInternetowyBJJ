@@ -1,7 +1,5 @@
 .logo-block,
-#products-block {
-    border-top: black 1px solid;
-    border-bottom: black 1px solid;
+#image-block {;
     font-family: 'Teko', sans-serif;
     font-size: 1.25em;
 }

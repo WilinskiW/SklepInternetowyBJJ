@@ -1,7 +1,4 @@
 <?php
-// Ustawienie czasu wygaśnięcia sesji na 30 minut
-$expire = 30*60; // 30 minut
-session_set_cookie_params($expire);
 session_start();
 include '../db_connect.php';
 
@@ -75,9 +72,9 @@ if (isset($_SESSION['user_id'])) {
     <div id="options">
         <div id="option_menu_userAccount" class="header_option">
             <i class="fa-solid fa-user"></i>
-            <?php if(isset($_SESSION['account_type']) && ($_SESSION['account_type'] == 'admin')){?>
+            <?php if (isset($_SESSION['account_type']) && ($_SESSION['account_type'] == 'admin')) { ?>
                 <a href="../admin_panel/index.php">Panel administracji</a>
-            <?php } else if(isset($_SESSION['user_id'])){ ?>
+            <?php } else if (isset($_SESSION['user_id'])) { ?>
                 <a href="../account_info/index.php">Twoje konto</a>
             <?php } else { ?>
                 <a href="../signin/index.php">Zaloguj się</a>
@@ -100,11 +97,14 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </div>
     <nav id="products-block">
-        <div id="men-products" class="product"><a class="category-href" href="../product_category/index.php?category=Mężczyźni">Mężczyźni</a>
+        <div id="men-products" class="product"><a class="category-href"
+                                                  href="../product_category/index.php?category=Mężczyźni">Mężczyźni</a>
         </div>
-        <div id="woman-products" class="product"><a class="category-href" href="../product_category/index.php?category=Kobiety">Kobiety</a>
+        <div id="woman-products" class="product"><a class="category-href"
+                                                    href="../product_category/index.php?category=Kobiety">Kobiety</a>
         </div>
-        <div id="kid-products" class="product"><a class="category-href" href="../product_category/index.php?category=Dzieci">Dzieci</a>
+        <div id="kid-products" class="product"><a class="category-href"
+                                                  href="../product_category/index.php?category=Dzieci">Dzieci</a>
         </div>
     </nav>
 </header>
@@ -140,7 +140,7 @@ if (isset($_SESSION['user_id'])) {
                         <form class="action-box" method="post" action="edit_product.php">
                             <input type="hidden" name="product_id" value="<?= $item['ID'] ?>">
                             <input type="hidden" name="action" value="increase">
-                            <input id="increase-input" class="action-button"  type="submit" value="+">
+                            <input id="increase-input" class="action-button" type="submit" value="+">
                         </form>
                         <form id="decrease-form" class="action-box" method="post" action="edit_product.php">
                             <input type="hidden" name="product_id" value="<?= $item['ID'] ?>">
@@ -153,8 +153,8 @@ if (isset($_SESSION['user_id'])) {
                         </form>
                     </td>
                 </tr>
-            <?php
-            $sum_price += $item['Price']*$item['Quantity'];
+                <?php
+                $sum_price += $item['Price'] * $item['Quantity'];
             endforeach; ?>
         </table>
         <div id="summarize-container">

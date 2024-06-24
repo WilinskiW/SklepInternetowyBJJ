@@ -1,7 +1,4 @@
 <?php
-// Ustawienie czasu wygaśnięcia sesji na 30 minut
-$expire = 30 * 60; // 30 minut
-session_set_cookie_params($expire);
 session_start();
 
 include_once 'db_connect.php';
@@ -14,8 +11,8 @@ if (isset($conn)) {
     throw new Exception("Nie połączono się z bazą danych!");
 }
 
-if (isset($_COOKIE['recently_viewed'])) {
-    $recently_viewed = json_decode($_COOKIE['recently_viewed'], true);
+if (isset($_SESSION['recently_viewed'])) {
+    $recently_viewed = $_SESSION['recently_viewed'];
     $placeholders = str_repeat('?,', count($recently_viewed) - 1) . '?';
     $stmt = $conn->prepare("SELECT * FROM Products WHERE ID IN ($placeholders)");
     $stmt->execute($recently_viewed);
@@ -68,11 +65,9 @@ if (isset($_COOKIE['recently_viewed'])) {
     <div id="options">
         <div id="option_menu_userAccount" class="header_option">
             <i class="fa-solid fa-user"></i>
-            <?php if (isset($_SESSION['account_type']) && ($_SESSION['account_type'] == 'admin')) {
-
-                ?>
+            <?php if (isset($_SESSION['account_type']) && ($_SESSION['account_type'] == 'admin')) { ?>
                 <a href="admin_panel/index.php">Panel administracji</a>
-            <?php } else if (isset($_SESSION['user_id'])) { ?>
+            <?php } else if (isset($_SESSION['user_id'])){ ?>
                 <a href="account_info/index.php">Twoje konto</a>
             <?php } else { ?>
                 <a href="signin/index.php">Zaloguj się</a>
@@ -147,7 +142,7 @@ if (isset($_COOKIE['recently_viewed'])) {
         </div>
     </section>
     <span class="produkty-span">Ostatnio oglądane</span>
-    <?php if (isset($recently_viewed)){ ?>
+    <?php if (isset($recent_products)){ ?>
     <section class="last-seen-gallery">
         <?php
         define("last_seen_amount", 4);

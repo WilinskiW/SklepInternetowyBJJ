@@ -1,7 +1,4 @@
 <?php
-// Ustawienie czasu wygaśnięcia sesji na 30 minut
-$expire = 30 * 60; // 30 minut
-session_set_cookie_params($expire);
 session_start();
 
 // Dołączenie skryptu do połączenia z bazą danych

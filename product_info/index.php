@@ -1,6 +1,4 @@
 <?php
-$expire = 30 * 60; // 30 minut
-session_set_cookie_params($expire);
 session_start();
 
 // Dołączenie skryptu do połączenia z bazą danych
@@ -19,45 +17,46 @@ $stmt->execute(['product_id' => $product_id]);
 $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-handleCookie($product_id);
+addToRecentViewed($product_id);
 
 //Wyszukaj wszystkie recenzje o produkcie
 $stmt = $conn->prepare("SELECT Users_ID,Rating, Comment FROM ratings WHERE Products_ID = :product_id");
 $stmt->execute(['product_id' => $product_id]);
 $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-var_dump($reviews);
 
-
-
-function handleCookie($product_id)
+function addToRecentViewed($product_id)
 {
-    // Dodajemy ID produktu do pliku cookie
-    if (isset($_COOKIE['recently_viewed'])) {
-        $recently_viewed = json_decode($_COOKIE['recently_viewed'], true);
+    if (isset($_SESSION['recently_viewed'])) {
+        $recently_viewed = $_SESSION['recently_viewed'];
     } else {
         $recently_viewed = array();
     }
 
     if (!in_array($product_id, $recently_viewed)) {
         $recently_viewed[] = $product_id;
-        setcookie('recently_viewed', json_encode($recently_viewed), time() + 3600 * 2, "/");
+        $_SESSION['recently_viewed'] = $recently_viewed;
     }
 }
+
 
 ?>
 
 <?php
 // Jeśli formularz został przesłany
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['comment']) && isset($_POST['rating'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $comment = $_POST['comment'];
     $rating = $_POST['rating'];
     $user_id = $_SESSION['user_id'];
 
+    if(!isset($comment)){
+        $comment = "";
+    }
+
     // Zapisz komentarz i ocenę w bazie danych
     $stmt = $conn->prepare("INSERT INTO ratings (Users_ID, Products_ID, Rating, Comment) 
-    VALUES ('$user_id', '$product_id','$rating','$comment')");
-    exec($stmt);
+    VALUES ($user_id, $product_id,$rating,'$comment')");
+    $stmt->execute();
 }
 ?>
 
@@ -178,7 +177,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['comment']) && isset($_
                     </div>
                     <div class="product-description">
                         <h4>Stan produktu w magazynie:</h4>
-                        <p class="description-text">Aktualna ilość: <?= $product['Amount'] ?> </p>
+                        <p class="description-text">
+                            <?php if ($amount = $product['Amount'] > 0){
+                            echo "Aktualna ilość: " . $product['Amount'];
+                            }
+                            else{
+                                echo "Niedostępny";
+                            } ?>
+                        </p>
                     </div>
                     <div class="product-description">
                         <h4>Cena produktu:</h4>
@@ -190,29 +196,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['comment']) && isset($_
             <div id="add-comment-rating-container">
                 <?php if (isset($_SESSION['user_id'])) { ?>
                 <form id="add-comment-rating-form" method="post">
-                    <textarea id="comment-area" name="comment" placeholder="Dodaj komentarz"></textarea>
-                    <input id="rating-input" type="number" name="rating" min="1" max="5" placeholder="Ocena (1-5)">
+                    <textarea id="comment-area" name="comment" placeholder="Dodaj komentarz" required></textarea>
+                    <input id="rating-input" type="number" name="rating" min="1" max="5" required placeholder="Ocena (1-5)">
                     <input id="add-comment-input" type="submit" value="Dodaj komentarz">
                 </form>
             </div>
+            <?php if (isset($reviews) && $reviews != null) { ?>
+                <div id="reviews">
+                    <h3 id="review-h3">Oceny produktu:</h3>
+                    <?php foreach ($reviews as $review ): ?>
+                        <div class="review">
+                            <div class="rating"><strong>Ocena: </strong><span style="color: var(--red-color)"><?= $review['Rating'] ?></span></div>
+                            <div class="comment"><strong>Komentarz: </strong><?= $review['Comment'] ?></div>
+                            <br>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php } ?>
         </div>
         <?php } else { ?>
             <p style="font-family: 'Montserrat', sans-serif;">
                 Aby dodać komentarz i ocenę trzeba być <a style="color: var(--red-color); text-decoration: underline"
                                                           href="../signin/index.php">zalogowanym!</a></p>
-        <?php } ?>
-
-        <?php if (isset($reviews) && !is_bool($reviews)) { ?>
-            <div id="reviews">
-                <h3 id="review-h3">Oceny produktu:</h3>
-                <?php foreach ($reviews as $review ): ?>
-                    <div class="review">
-                        <div class="rating"><strong>Ocena: </strong><?= $review['Rating'] ?></div>
-                        <div class="comment"><strong>Komentarz: </strong><?= $review['Comment'] ?></div>
-                        <br>
-                    </div>
-                <?php endforeach; ?>
-            </div>
         <?php } ?>
     </div>
 </main>
